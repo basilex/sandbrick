@@ -29,6 +29,8 @@ dependencies {
 
 	implementation("org.springframework.security:spring-security-crypto")
 
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.github.cdimascio:dotenv-kotlin:6.3.1")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")

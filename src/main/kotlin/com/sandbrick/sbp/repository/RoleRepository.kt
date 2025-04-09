@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface RoleRepository : JpaRepository<Role, String> {
     fun existsByName(name: String): Boolean
-    fun findByName(name: String): String
+    fun findByName(name: String): Role?
 }

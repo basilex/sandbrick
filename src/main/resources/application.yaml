@@ -31,6 +31,9 @@ spring:
 #  flyway:
 #    enabled: true
 #    locations: classpath:/db/migrations
+springdoc:
+  swagger-ui:
+    path: /swagger.html
 management:
   endpoints:
     web:

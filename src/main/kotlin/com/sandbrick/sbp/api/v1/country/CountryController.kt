@@ -4,12 +4,14 @@ package com.sandbrick.sbp.api.v1.country
 import com.sandbrick.sbp.api.v1.country.dto.CreateCountryRequest
 import com.sandbrick.sbp.api.v1.country.dto.UpdateCountryRequest
 import com.sandbrick.sbp.service.CountryService
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/countries")
+@Tag(name = "Country", description = "Country control")
 class CountryController(
     private val countryService: CountryService
 ) {

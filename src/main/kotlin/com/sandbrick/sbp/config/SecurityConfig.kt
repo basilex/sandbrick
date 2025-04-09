@@ -1,7 +1,7 @@
 package com.sandbrick.sbp.config
 
 import com.sandbrick.sbp.service.JwtService
-import com.sandbrick.sbp.service.auth.UserDetailsServiceImpl
+import com.sandbrick.sbp.service.auth.UserDetailsService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -15,7 +15,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 @Configuration
 class SecurityConfig(
     private val jwtService: JwtService,
-    private val userDetailsService: UserDetailsServiceImpl
+    private val userDetailsService: UserDetailsService
 ) {
 
     @Bean

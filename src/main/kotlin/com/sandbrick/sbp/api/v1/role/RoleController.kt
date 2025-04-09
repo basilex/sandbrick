@@ -3,12 +3,14 @@ package com.sandbrick.sbp.api.v1.role
 import com.sandbrick.sbp.api.v1.role.dto.request.RoleRequest
 import com.sandbrick.sbp.api.v1.role.dto.response.RoleResponse
 import com.sandbrick.sbp.service.role.RoleService
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/roles")
+@Tag(name = "Role", description = "Roles control")
 class RoleController(
     private val roleService: RoleService
 ) {

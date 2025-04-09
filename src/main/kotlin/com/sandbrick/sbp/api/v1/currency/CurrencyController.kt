@@ -3,12 +3,14 @@ package com.sandbrick.sbp.api.v1.currency
 import com.sandbrick.sbp.api.v1.currency.dto.CreateCurrencyRequest
 import com.sandbrick.sbp.api.v1.currency.dto.UpdateCurrencyRequest
 import com.sandbrick.sbp.service.CurrencyService
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/currencies")
+@Tag(name = "Currency", description = "Currency control")
 class CurrencyController(
     private val service: CurrencyService
 ) {

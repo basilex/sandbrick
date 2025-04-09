@@ -3,8 +3,8 @@ package com.sandbrick.sbp.service.role
 import com.sandbrick.sbp.api.v1.role.dto.request.RoleRequest
 import com.sandbrick.sbp.api.v1.role.dto.response.RoleResponse
 import com.sandbrick.sbp.domain.role.Role
-import com.sandbrick.sbp.domain.role.RoleRepository
 import com.sandbrick.sbp.exception.ResourceNotFoundException
+import com.sandbrick.sbp.repository.RoleRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

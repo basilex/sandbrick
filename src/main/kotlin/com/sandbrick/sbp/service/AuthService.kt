@@ -1,4 +1,4 @@
-package com.sandbrick.sbp.service.auth
+package com.sandbrick.sbp.service
 
 import com.sandbrick.sbp.api.v1.auth.dto.AuthResponse
 import com.sandbrick.sbp.api.v1.auth.dto.LoginRequest
@@ -8,7 +8,6 @@ import com.sandbrick.sbp.exception.DuplicateEntityException
 import com.sandbrick.sbp.exception.ResourceNotFoundException
 import com.sandbrick.sbp.repository.RoleRepository
 import com.sandbrick.sbp.repository.UserRepository
-import com.sandbrick.sbp.service.JwtService
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
