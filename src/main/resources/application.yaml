@@ -38,10 +38,11 @@ spring:
 #    locations: classpath:/db/migrations
 springdoc:
   packages-to-scan: com.sandbrick.sbp
-#  swagger-ui:
-#    path: /api/v1/docs
 #  api-docs:
 #    path: /api/v1/docs/openapi.json
+#  swagger-ui:
+#    path: /api/v1/docs
+#    config-url: /api/v1/docs/openapi.json
 management:
   endpoints:
     web:

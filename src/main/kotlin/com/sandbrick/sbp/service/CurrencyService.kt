@@ -2,7 +2,7 @@ package com.sandbrick.sbp.service
 
 import com.sandbrick.sbp.api.v1.currency.dto.CurrencyRequest
 import com.sandbrick.sbp.api.v1.currency.dto.CurrencyResponse
-import com.sandbrick.sbp.domain.currency.Currency
+import com.sandbrick.sbp.domain.Currency
 import com.sandbrick.sbp.exception.DuplicateEntityException
 import com.sandbrick.sbp.exception.ResourceNotFoundException
 import com.sandbrick.sbp.repository.CurrencyRepository
@@ -42,5 +42,5 @@ class CurrencyService(
 
     fun getAll(): List<CurrencyResponse> = repository.findAll().map { it.toResponse() }
 
-    private fun Currency.toResponse() = CurrencyResponse(id.toString(), code, name, symbol)
+    private fun Currency.toResponse() = CurrencyResponse(id, code, name, symbol)
 }

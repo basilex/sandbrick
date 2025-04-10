@@ -1,6 +1,6 @@
 package com.sandbrick.sbp.repository
 
-import com.sandbrick.sbp.domain.user.User
+import com.sandbrick.sbp.domain.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

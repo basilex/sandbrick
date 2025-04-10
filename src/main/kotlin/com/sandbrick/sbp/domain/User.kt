@@ -1,19 +1,14 @@
-package com.sandbrick.sbp.domain.user
+package com.sandbrick.sbp.domain
 
 import com.sandbrick.sbp.domain.base.BaseAuditEntity
-import com.sandbrick.sbp.domain.role.Role
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
-import java.util.*
 
 @Entity
 @Table(name = "users")
 class User(
-    @Id
-    val id: UUID = UUID.randomUUID(),
-
     @field:NotBlank(message = "Username is required")
     @field:Size(min = 4, max = 64, message = "Ussername must be from 4 to 64 characters")
     @Column(nullable = false, unique = true)

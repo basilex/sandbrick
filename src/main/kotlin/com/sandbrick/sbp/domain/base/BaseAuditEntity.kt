@@ -1,14 +1,15 @@
 
 package com.sandbrick.sbp.domain.base
 
-import jakarta.persistence.Column
-import jakarta.persistence.MappedSuperclass
-import jakarta.persistence.PrePersist
-import jakarta.persistence.PreUpdate
+import com.sandbrick.sbp.util.Xid
+import jakarta.persistence.*
 import java.time.Instant
 
 @MappedSuperclass
 abstract class BaseAuditEntity {
+    @Id
+    val id: String = Xid.generate()
+
     @Column(nullable = false, updatable = false)
     var createdAt: Instant = Instant.now()
 

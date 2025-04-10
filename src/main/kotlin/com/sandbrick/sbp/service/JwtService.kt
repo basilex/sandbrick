@@ -1,6 +1,7 @@
 package com.sandbrick.sbp.service
 
-import com.sandbrick.sbp.domain.user.User
+import com.sandbrick.sbp.domain.User
+import com.sandbrick.sbp.domain.auth.TokenType
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -15,14 +16,21 @@ class JwtService {
     private val secretKey: SecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256)
     private val expirationMs: Long = 1000 * 60 * 60 * 24 // 24 hours
 
-    fun generateToken(user: User): String {
-        val roles = user.roles.map { it.name }.toSet()
-
+    fun generateToken(user: User, type: TokenType): String {
+        val claims = mutableMapOf<String, Any>(
+            "roles" to user.roles.map { it.name },
+            "type" to type.name.lowercase()
+        )
+        val now = Date()
+        val expiration = when (type) {
+            TokenType.ACCESS -> Date(now.time + 1000 * 60 * 15)           // 15 минут
+            TokenType.REFRESH -> Date(now.time + 1000 * 60 * 60 * 24 * 7) // 7 дней
+        }
         return Jwts.builder()
+            .setClaims(claims)
             .setSubject(user.username)
-            .claim("roles", roles) // 👈 Добавили роли
-            .setIssuedAt(Date())
-            .setExpiration(Date(System.currentTimeMillis() + expirationMs))
+            .setIssuedAt(now)
+            .setExpiration(expiration)
             .signWith(secretKey)
             .compact()
     }

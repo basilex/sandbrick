@@ -2,8 +2,7 @@ package com.sandbrick.sbp.service
 
 import com.sandbrick.sbp.api.v1.user.dto.UserRequest
 import com.sandbrick.sbp.api.v1.user.dto.UserResponse
-import com.sandbrick.sbp.domain.role.Role
-import com.sandbrick.sbp.domain.user.User
+import com.sandbrick.sbp.domain.User
 import com.sandbrick.sbp.exception.DuplicateEntityException
 import com.sandbrick.sbp.exception.ResourceNotFoundException
 import com.sandbrick.sbp.repository.RoleRepository

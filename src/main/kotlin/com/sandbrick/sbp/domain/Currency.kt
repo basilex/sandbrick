@@ -1,19 +1,15 @@
-package com.sandbrick.sbp.domain.currency
+package com.sandbrick.sbp.domain
 
 import com.sandbrick.sbp.domain.base.BaseAuditEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
-import java.util.*
 
 @Entity
 @Table(name = "currency")
 data class Currency(
-    @Id val id: UUID = UUID.randomUUID(),
-
     @field:NotBlank(message = "Code must not be empty")
     @field:Size(min = 3, max = 3, message = "Code must be exactly 3 characters")
     @Column(nullable = false, unique = true)

@@ -1,7 +1,7 @@
 
 package com.sandbrick.sbp.repository
 
-import com.sandbrick.sbp.domain.currency.Currency
+import com.sandbrick.sbp.domain.Currency
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface CurrencyRepository : JpaRepository<Currency, String> {

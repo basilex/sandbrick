@@ -1,17 +1,13 @@
-package com.sandbrick.sbp.domain.country
+package com.sandbrick.sbp.domain
 
 import com.sandbrick.sbp.domain.base.BaseAuditEntity
-import com.sandbrick.sbp.domain.currency.Currency
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
-import java.util.*
 
 @Entity
 @Table(name = "country")
 class Country(
-    @Id val id: UUID = UUID.randomUUID(),
-
     @field:NotBlank(message = "Name must not be empty")
     @field:Size(min = 2, max = 255, message = "Name must be between 2 and 255 characters")
     @Column(nullable = false, unique = true)

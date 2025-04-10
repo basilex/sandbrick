@@ -75,6 +75,16 @@ class GlobalExceptionHandler {
         )
     }
 
+    @ExceptionHandler(UnauthorizedException::class)
+    fun handleUnathorized(ex: UnauthorizedException): ResponseEntity<Map<String, Any>> {
+        return buildErrorResponse(
+            status = HttpStatus.UNAUTHORIZED,
+            error = "Unauthorized",
+            message = "Unauthorized",
+            code = "UNAUTHORIZED"
+        )
+    }
+
     private fun buildErrorResponse(
         status: HttpStatus,
         error: String,

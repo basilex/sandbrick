@@ -26,10 +26,13 @@ class SecurityConfig(
             .authorizeHttpRequests {
                 it
                     .requestMatchers(
+                        // api
                         "/api/v1/auth/**",
-                        "/swagger-ui.html", "/swagger-ui/**",
-                        "/v3/api-docs", "/v3/api-docs/**",
-                        "/swagger-resources/**", "/webjars/**",
+                        // swagger
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        // actuator
                         "/actuator/**"
                     ).permitAll()
                     .anyRequest().authenticated()
@@ -42,6 +45,8 @@ class SecurityConfig(
     }
 
     @Bean
-    fun authenticationManager(config: AuthenticationConfiguration): AuthenticationManager =
-        config.authenticationManager
+    fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager {
+        return authenticationConfiguration.authenticationManager
+    }
+
 }

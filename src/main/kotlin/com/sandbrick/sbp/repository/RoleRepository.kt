@@ -1,6 +1,6 @@
 package com.sandbrick.sbp.repository
 
-import com.sandbrick.sbp.domain.role.Role
+import com.sandbrick.sbp.domain.Role
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface RoleRepository : JpaRepository<Role, String> {

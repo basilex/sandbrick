@@ -3,7 +3,8 @@ package com.sandbrick.sbp.service
 import com.sandbrick.sbp.api.v1.auth.dto.AuthResponse
 import com.sandbrick.sbp.api.v1.auth.dto.LoginRequest
 import com.sandbrick.sbp.api.v1.auth.dto.RegisterRequest
-import com.sandbrick.sbp.domain.user.User
+import com.sandbrick.sbp.domain.User
+import com.sandbrick.sbp.domain.auth.TokenType
 import com.sandbrick.sbp.exception.DuplicateEntityException
 import com.sandbrick.sbp.exception.ResourceNotFoundException
 import com.sandbrick.sbp.repository.RoleRepository
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.time.Instant
 
 @Service
 class AuthService(
@@ -19,7 +21,8 @@ class AuthService(
     private val roleRepository: RoleRepository,
     private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService,
-    private val authenticationManager: AuthenticationManager
+    private val authenticationManager: AuthenticationManager,
+    private val tokenService: TokenService
 ) {
 
     fun register(request: RegisterRequest): AuthResponse {
@@ -31,6 +34,7 @@ class AuthService(
         }
         val defaultRole = roleRepository.findByName("USER")
             ?: throw ResourceNotFoundException("Default role USER not found")
+
         val user = User(
             username = request.username,
             email = request.email,
@@ -38,8 +42,7 @@ class AuthService(
             roles = mutableSetOf(defaultRole)
         )
         val savedUser = userRepository.save(user)
-        val jwt = jwtService.generateToken(savedUser)
-        return AuthResponse(jwt)
+        return generateTokensAndSave(savedUser)
     }
 
     fun authenticate(request: LoginRequest): AuthResponse {
@@ -48,7 +51,22 @@ class AuthService(
         )
         val user = userRepository.findByUsername(request.username)
             ?: throw ResourceNotFoundException("User not found")
-        val token = jwtService.generateToken(user)
-        return AuthResponse(token)
+
+        tokenService.deleteAllUserTokens(user)
+        return generateTokensAndSave(user)
+    }
+
+    fun generateTokensAndSave(user: User): AuthResponse {
+        val accessToken = jwtService.generateToken(user, TokenType.ACCESS)
+        val refreshToken = jwtService.generateToken(user, TokenType.REFRESH)
+
+        val now = Instant.now()
+        val accessExpiry = now.plusSeconds(60 * 15) // 15 мин
+        val refreshExpiry = now.plusSeconds(60 * 60 * 24 * 7) // 7 дней
+
+        tokenService.saveToken(user, accessToken, TokenType.ACCESS, accessExpiry)
+        tokenService.saveToken(user, refreshToken, TokenType.REFRESH, refreshExpiry)
+
+        return AuthResponse(accessToken, refreshToken)
     }
 }

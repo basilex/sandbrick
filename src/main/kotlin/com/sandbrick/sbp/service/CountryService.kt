@@ -2,7 +2,7 @@ package com.sandbrick.sbp.service
 
 import com.sandbrick.sbp.api.v1.country.dto.CountryResponse
 import com.sandbrick.sbp.api.v1.country.dto.CountryRequest
-import com.sandbrick.sbp.domain.country.Country
+import com.sandbrick.sbp.domain.Country
 import com.sandbrick.sbp.exception.ResourceNotFoundException
 import com.sandbrick.sbp.mapper.toResponse
 import com.sandbrick.sbp.repository.CountryRepository
