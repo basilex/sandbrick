@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS token;
+DROP TABLE IF EXISTS profile;
 DROP TABLE IF EXISTS user_role;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS role;
@@ -55,6 +56,18 @@ CREATE TABLE user_role (
     PRIMARY KEY (user_id, role_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE TABLE profile (
+    id VARCHAR(24) PRIMARY KEY,
+    user_id VARCHAR(24) NOT NULL UNIQUE,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    phone VARCHAR(32),
+    avatar_url TEXT,
+    created_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL,
+    CONSTRAINT fk_profile_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE token (

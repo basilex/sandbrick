@@ -1,5 +1,6 @@
 package com.sandbrick.sbp.service.auth
 
+import com.sandbrick.sbp.domain.User
 import com.sandbrick.sbp.repository.UserRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -23,5 +24,10 @@ class UserDetailsService(
             user.password,
             authorities
         )
+    }
+
+    fun loadUserEntity(username: String): User {
+        return userRepository.findByUsername(username)
+            ?: throw UsernameNotFoundException("User not found: $username")
     }
 }

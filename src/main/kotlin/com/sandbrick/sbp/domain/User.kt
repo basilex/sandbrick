@@ -31,5 +31,8 @@ class User(
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "role_id")]
     )
-    var roles: MutableSet<Role> = mutableSetOf()
+    var roles: MutableSet<Role> = mutableSetOf(),
+
+    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true)
+    var profile: Profile? = null
 ) : BaseAuditEntity()

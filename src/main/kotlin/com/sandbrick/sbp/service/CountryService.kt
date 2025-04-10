@@ -6,6 +6,9 @@ import com.sandbrick.sbp.domain.Country
 import com.sandbrick.sbp.exception.ResourceNotFoundException
 import com.sandbrick.sbp.repository.CountryRepository
 import com.sandbrick.sbp.repository.CurrencyRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -48,7 +51,11 @@ class CountryService(
     @Transactional
     fun delete(id: String) = countryRepository.deleteById(id)
 
-    fun getAll(): List<CountryResponse> = countryRepository.findAll().map { it.toResponse() }
+    fun getAllPaged(page: Int, size: Int): Page<CountryResponse> {
+        val pageable = PageRequest.of(page, size, Sort.by("name").ascending())
+        return countryRepository.findAllByOrderByNameAsc(pageable)
+            .map { it.toResponse() }
+    }
 
     private fun Country.toResponse(): CountryResponse = CountryResponse(
         id = id,
@@ -58,5 +65,4 @@ class CountryService(
         code = code,
         currencyIds = currencies.map { it.id }.toSet()
     )
-
 }

@@ -2,11 +2,13 @@
 package com.sandbrick.sbp.api.v1.country
 
 import com.sandbrick.sbp.api.v1.country.dto.CountryRequest
+import com.sandbrick.sbp.api.v1.country.dto.CountryResponse
 import com.sandbrick.sbp.service.CountryService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
+import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -35,11 +37,13 @@ class CountryController(
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete a country by ID")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable id: String) =
-        countryService.delete(id)
+    fun delete(@PathVariable id: String) = countryService.delete(id)
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    @Operation(summary = "Get all countries")
-    fun getAll() = countryService.getAll()
+    @Operation(summary = "Get all countries with pagination")
+    fun getAllPaged(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "10") size: Int
+    ): Page<CountryResponse> = countryService.getAllPaged(page, size)
 }
