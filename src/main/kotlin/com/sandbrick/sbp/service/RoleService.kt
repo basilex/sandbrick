@@ -48,8 +48,5 @@ class RoleService(
         roleRepository.deleteById(id)
     }
 
-    private fun Role.toResponse() = RoleResponse(
-        id = this.id.toString(),
-        name = this.name
-    )
+    private fun Role.toResponse() = RoleResponse(id, name)
 }

@@ -87,9 +87,9 @@ class UserService(
     }
 
     private fun User.toResponse() = UserResponse(
-        id = this.id.toString(),
-        username = this.username,
-        email = this.email,
-        roles = this.roles.map { it.name }.toSet()
+        id = id,
+        username = username,
+        email = email,
+        roles = roles.map { it.name }.toSet()
     )
 }

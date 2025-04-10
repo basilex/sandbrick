@@ -13,7 +13,6 @@ CREATE TABLE currency (
     symbol VARCHAR(10) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL
-
 );
 
 CREATE TABLE country (

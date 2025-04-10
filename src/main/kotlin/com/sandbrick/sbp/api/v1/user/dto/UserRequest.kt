@@ -25,5 +25,5 @@ data class UserRequest(
 
     @field:NotBlank(message = "At least one role is required")
     @Schema(description = "Set of role names to assign", example = "[\"USER\", \"ADMIN\"]")
-    val roles: Set<String>
+    val roles: Set<String> = setOf()
 )

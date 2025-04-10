@@ -4,7 +4,6 @@ import com.sandbrick.sbp.api.v1.country.dto.CountryResponse
 import com.sandbrick.sbp.api.v1.country.dto.CountryRequest
 import com.sandbrick.sbp.domain.Country
 import com.sandbrick.sbp.exception.ResourceNotFoundException
-import com.sandbrick.sbp.mapper.toResponse
 import com.sandbrick.sbp.repository.CountryRepository
 import com.sandbrick.sbp.repository.CurrencyRepository
 import org.springframework.stereotype.Service
@@ -50,4 +49,14 @@ class CountryService(
     fun delete(id: String) = countryRepository.deleteById(id)
 
     fun getAll(): List<CountryResponse> = countryRepository.findAll().map { it.toResponse() }
+
+    private fun Country.toResponse(): CountryResponse = CountryResponse(
+        id = id,
+        name = name,
+        iso2 = iso2,
+        iso3 = iso3,
+        code = code,
+        currencyIds = currencies.map { it.id }.toSet()
+    )
+
 }
