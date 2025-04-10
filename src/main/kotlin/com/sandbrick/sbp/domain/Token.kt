@@ -16,6 +16,12 @@ class Token(
     var token: String,
 
     @Column(nullable = false)
+    var expired: Boolean = false,
+
+    @Column(nullable = false)
+    var revoked: Boolean = false,
+
+    @Column(nullable = false)
     var expiryDate: Instant,
 
     @ManyToOne(fetch = FetchType.LAZY)

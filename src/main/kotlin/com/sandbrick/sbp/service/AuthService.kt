@@ -52,11 +52,13 @@ class AuthService(
         val user = userRepository.findByUsername(request.username)
             ?: throw ResourceNotFoundException("User not found")
 
-        tokenService.deleteAllUserTokens(user)
+        tokenService.revokeAllUserTokens(user)
         return generateTokensAndSave(user)
     }
 
     fun generateTokensAndSave(user: User): AuthResponse {
+        tokenService.revokeAllUserTokens(user)
+
         val accessToken = jwtService.generateToken(user, TokenType.ACCESS)
         val refreshToken = jwtService.generateToken(user, TokenType.REFRESH)
 

@@ -45,6 +45,16 @@ class TokenService(
     }
 
     @Transactional
+    fun revokeAllUserTokens(user: User) {
+        val validTokens = tokenRepository.findAllValidTokensByUser(user.id)
+        validTokens.forEach {
+            it.expired = true
+            it.revoked = true
+        }
+        tokenRepository.saveAll(validTokens)
+    }
+
+    @Transactional
     fun deleteAllUserTokens(user: User) {
         tokenRepository.deleteAllByUser(user)
     }

@@ -63,6 +63,8 @@ CREATE TABLE token (
     user_id VARCHAR(24) NOT NULL,
     token VARCHAR(512) NOT NULL UNIQUE,
     type VARCHAR(16) NOT NULL,
+    expired BOOLEAN NOT NULL,
+    revoked BOOLEAN NOT NULL,
     expiry_date TIMESTAMP WITH TIME ZONE NOT NULL,
     CONSTRAINT fk_token_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

@@ -29,6 +29,16 @@ class AuthController(
     fun login(@Valid @RequestBody request: LoginRequest): AuthResponse =
         authService.authenticate(request)
 
+    @PostMapping("/logout")
+    fun logout(@RequestHeader("Authorization") authHeader: String) {
+        val token = authHeader.removePrefix("Bearer ").trim()
+        val tokenEntity = tokenRepository.findByToken(token)
+            ?: throw UnauthorizedException("Invalid access token")
+        tokenEntity.expired = true
+        tokenEntity.revoked = true
+        tokenRepository.save(tokenEntity)
+    }
+
     @PostMapping("/refresh")
     fun refreshToken(@RequestBody request: RefreshRequest): AuthResponse {
         val tokenEntity = tokenRepository.findByTokenAndType(request.refreshToken, TokenType.REFRESH)
