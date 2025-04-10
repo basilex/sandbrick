@@ -1,0 +1,58 @@
+DROP TABLE IF EXISTS user_role;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS country_currency;
+DROP TABLE IF EXISTS currency;
+DROP TABLE IF EXISTS country;
+
+CREATE TABLE currency (
+    id UUID PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    code VARCHAR(10) NOT NULL UNIQUE,
+    symbol VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
+
+);
+
+CREATE TABLE country (
+    id UUID PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    iso2 VARCHAR(2) NOT NULL UNIQUE,
+    iso3 VARCHAR(3) NOT NULL UNIQUE,
+    code VARCHAR(10) NOT NULL UNIQUE,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
+);
+
+CREATE TABLE country_currency (
+    country_id UUID NOT NULL,
+    currency_id UUID NOT NULL,
+    PRIMARY KEY (country_id, currency_id),
+    FOREIGN KEY (country_id) REFERENCES country(id) ON DELETE CASCADE,
+    FOREIGN KEY (currency_id) REFERENCES currency(id) ON DELETE CASCADE
+);
+
+CREATE TABLE role (
+    id UUID PRIMARY KEY,
+    name VARCHAR(64) NOT NULL UNIQUE,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
+);
+
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    username VARCHAR(64) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
+);
+
+CREATE TABLE user_role (
+    user_id UUID NOT NULL,
+    role_id UUID NOT NULL,
+    PRIMARY KEY (user_id, role_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);

@@ -38,7 +38,7 @@ class AuthService(
             roles = mutableSetOf(defaultRole)
         )
         val savedUser = userRepository.save(user)
-        val jwt = jwtService.generateToken(savedUser.username)
+        val jwt = jwtService.generateToken(savedUser)
         return AuthResponse(jwt)
     }
 
@@ -48,7 +48,7 @@ class AuthService(
         )
         val user = userRepository.findByUsername(request.username)
             ?: throw ResourceNotFoundException("User not found")
-        val token = jwtService.generateToken(user.username)
+        val token = jwtService.generateToken(user)
         return AuthResponse(token)
     }
 }

@@ -4,9 +4,14 @@ server:
 spring:
   profiles:
     active: dev
+  main:
+    time-zone: UTC
+  application:
+    name: sandbrick
   datasource:
     url: jdbc:postgresql://localhost:5432/sbpdb_dev
     driver-class-name: org.postgresql.Driver
+    initialization-mode: always
     username: system
     password: passw0rd
     hikari:
@@ -20,20 +25,23 @@ spring:
       hibernate:
         format_sql: true
         use_sql_comments: true
-#  sql:
-#    init:
-#      mode: always
-#      platform: postgres
-#      data-locations: classpath:/db/data.sql
-#      schema-locations: classpath:/db/schema.sql
+        jdbc.time_zone: UTC
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:/db/schema.sql
+      data-locations: classpath:/db/data.sql
   jackson:
     time-zone: UTC
 #  flyway:
 #    enabled: true
 #    locations: classpath:/db/migrations
 springdoc:
-  swagger-ui:
-    path: /swagger.html
+  packages-to-scan: com.sandbrick.sbp
+#  swagger-ui:
+#    path: /api/v1/docs
+#  api-docs:
+#    path: /api/v1/docs/openapi.json
 management:
   endpoints:
     web:

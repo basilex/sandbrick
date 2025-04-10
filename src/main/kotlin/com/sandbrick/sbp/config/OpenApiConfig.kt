@@ -17,7 +17,7 @@ class OpenApiConfig {
                 Info()
                     .title("Sandbrick API")
                     .version("v1")
-                    .description("Endpoints documentation")
+                    .description("API documentation for Sandbrick project")
             )
             .components(
                 Components().addSecuritySchemes(
@@ -27,8 +27,6 @@ class OpenApiConfig {
                         .bearerFormat("JWT")
                 )
             )
-            .addSecurityItem(
-                SecurityRequirement().addList("bearerAuth")
-            )
+            .addSecurityItem(SecurityRequirement().addList("bearerAuth"))
     }
 }

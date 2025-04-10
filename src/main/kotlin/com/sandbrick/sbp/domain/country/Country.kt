@@ -10,7 +10,7 @@ import java.util.*
 @Entity
 @Table(name = "country")
 class Country(
-    @Id val id: String = UUID.randomUUID().toString(),
+    @Id val id: UUID = UUID.randomUUID(),
 
     @field:NotBlank(message = "Name must not be empty")
     @field:Size(min = 2, max = 255, message = "Name must be between 2 and 255 characters")

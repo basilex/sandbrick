@@ -80,8 +80,15 @@ class UserService(
         userRepository.deleteById(id)
     }
 
+    @Transactional
+    fun findByUsername(username: String): UserResponse {
+        val user = userRepository.findByUsername(username)
+            ?: throw ResourceNotFoundException("User with username '$username' not found")
+        return user.toResponse()
+    }
+
     private fun User.toResponse() = UserResponse(
-        id = this.id,
+        id = this.id.toString(),
         username = this.username,
         email = this.email,
         roles = this.roles.map { it.name }.toSet()

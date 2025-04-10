@@ -5,8 +5,8 @@ plugins {
 	kotlin("jvm") version "1.9.25"
 	kotlin("plugin.jpa") version "1.9.25"
 	kotlin("plugin.spring") version "1.9.25"
-	id("org.springframework.boot") version "3.4.4"
-	id("io.spring.dependency-management") version "1.1.7"
+	id("org.springframework.boot") version "3.2.4"
+	id("io.spring.dependency-management") version "1.1.4"
 }
 
 java {
@@ -29,7 +29,7 @@ dependencies {
 
 	implementation("org.springframework.security:spring-security-crypto")
 
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.github.cdimascio:dotenv-kotlin:6.3.1")
@@ -58,6 +58,10 @@ allOpen {
 	annotation("jakarta.persistence.Entity")
 	annotation("jakarta.persistence.MappedSuperclass")
 	annotation("jakarta.persistence.Embeddable")
+}
+
+tasks.withType<JavaExec> {
+	jvmArgs = listOf("-Duser.timezone=UTC")
 }
 
 tasks.withType<Test> {

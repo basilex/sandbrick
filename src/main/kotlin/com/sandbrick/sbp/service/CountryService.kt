@@ -1,8 +1,7 @@
 package com.sandbrick.sbp.service
 
 import com.sandbrick.sbp.api.v1.country.dto.CountryResponse
-import com.sandbrick.sbp.api.v1.country.dto.CreateCountryRequest
-import com.sandbrick.sbp.api.v1.country.dto.UpdateCountryRequest
+import com.sandbrick.sbp.api.v1.country.dto.CountryRequest
 import com.sandbrick.sbp.domain.country.Country
 import com.sandbrick.sbp.exception.ResourceNotFoundException
 import com.sandbrick.sbp.mapper.toResponse
@@ -18,7 +17,7 @@ class CountryService(
 ) {
 
     @Transactional
-    fun create(request: CreateCountryRequest): CountryResponse {
+    fun create(request: CountryRequest): CountryResponse {
         val currencies = currencyRepository.findAllById(request.currencyIds)
         val country = Country(
             name = request.name,
@@ -31,7 +30,7 @@ class CountryService(
     }
 
     @Transactional
-    fun update(id: String, request: UpdateCountryRequest): CountryResponse {
+    fun update(id: String, request: CountryRequest): CountryResponse {
         val country = countryRepository.findById(id).orElseThrow {
             ResourceNotFoundException("Country with id $id not found")
         }

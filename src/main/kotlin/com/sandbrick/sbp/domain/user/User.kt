@@ -12,15 +12,16 @@ import java.util.*
 @Table(name = "users")
 class User(
     @Id
-    val id: String = UUID.randomUUID().toString(),
+    val id: UUID = UUID.randomUUID(),
 
     @field:NotBlank(message = "Username is required")
-    @field:Size(min = 4, max = 32)
+    @field:Size(min = 4, max = 64, message = "Ussername must be from 4 to 64 characters")
     @Column(nullable = false, unique = true)
     var username: String,
 
     @field:Email(message = "Email should be valid")
     @field:NotBlank(message = "Email is required")
+    @field:Size(min = 4, max = 255, message = "Email must be from 4 to 255 characters")
     @Column(nullable = false, unique = true)
     var email: String,
 

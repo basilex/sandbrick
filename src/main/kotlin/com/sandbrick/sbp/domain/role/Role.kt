@@ -10,10 +10,10 @@ import java.util.*
 @Table(name = "role")
 class Role(
     @Id
-    val id: String = UUID.randomUUID().toString(),
+    val id: UUID = UUID.randomUUID(),
 
     @field:NotBlank(message = "Role name is required")
-    @field:Size(min = 3, max = 255, message = "Name must be from 3 to 255 characters")
+    @field:Size(min = 3, max = 64, message = "Name must be from 3 to 255 characters")
     @Column(nullable = false, unique = true)
     var name: String
 ) : BaseAuditEntity()

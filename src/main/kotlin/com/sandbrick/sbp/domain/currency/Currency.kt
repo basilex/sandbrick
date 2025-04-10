@@ -12,7 +12,7 @@ import java.util.*
 @Entity
 @Table(name = "currency")
 data class Currency(
-    @Id val id: String = UUID.randomUUID().toString(),
+    @Id val id: UUID = UUID.randomUUID(),
 
     @field:NotBlank(message = "Code must not be empty")
     @field:Size(min = 3, max = 3, message = "Code must be exactly 3 characters")

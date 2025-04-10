@@ -49,7 +49,7 @@ class RoleService(
     }
 
     private fun Role.toResponse() = RoleResponse(
-        id = this.id,
+        id = this.id.toString(),
         name = this.name
     )
 }
