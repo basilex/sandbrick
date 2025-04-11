@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size
 @Table(name = "role")
 class Role(
     @field:NotBlank(message = "Role name is required")
-    @field:Size(min = 3, max = 64, message = "Name must be from 3 to 255 characters")
+    @field:Size(min = 3, max = 64, message = "Name must be from 3 to 64 characters")
     @Column(nullable = false, unique = true)
     var name: String
 ) : BaseAuditEntity()

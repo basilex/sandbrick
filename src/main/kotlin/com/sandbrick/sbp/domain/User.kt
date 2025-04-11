@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Size
 @Table(name = "users")
 class User(
     @field:NotBlank(message = "Username is required")
-    @field:Size(min = 4, max = 64, message = "Ussername must be from 4 to 64 characters")
+    @field:Size(min = 3, max = 64, message = "Ussername must be from 3 to 64 characters")
     @Column(nullable = false, unique = true)
     var username: String,
 
@@ -21,7 +21,7 @@ class User(
     var email: String,
 
     @field:NotBlank(message = "Password is required")
-    @field:Size(min = 6)
+    @field:Size(min = 6, max = 255, message = "Paassword must be from 6 to 255 characters")
     @Column(nullable = false)
     var password: String,
 

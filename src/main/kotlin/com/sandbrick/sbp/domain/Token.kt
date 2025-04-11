@@ -3,6 +3,7 @@ package com.sandbrick.sbp.domain
 import com.sandbrick.sbp.domain.auth.TokenType
 import com.sandbrick.sbp.domain.base.BaseAuditEntity
 import jakarta.persistence.*
+import jakarta.validation.constraints.Size
 import java.time.Instant
 
 @Entity
@@ -12,6 +13,7 @@ class Token(
     @Column(nullable = false)
     var type: TokenType,  // <-- access / refresh
 
+    @field:Size(max = 512, message = "Token must be from 1 to 255 characters")
     @Column(nullable = false, unique = true)
     var token: String,
 
