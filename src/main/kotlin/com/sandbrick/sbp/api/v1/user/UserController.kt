@@ -2,6 +2,7 @@ package com.sandbrick.sbp.api.v1.user
 
 import com.sandbrick.sbp.api.v1.user.dto.UserRequest
 import com.sandbrick.sbp.api.v1.user.dto.UserResponse
+import com.sandbrick.sbp.mapper.UserMapper
 import com.sandbrick.sbp.service.UserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -18,25 +19,28 @@ import org.springframework.web.bind.annotation.*
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "User", description = "User management operations")
 class UserController(
-    private val userService: UserService
+    private val userService: UserService,
+    private val userMapper: UserMapper
 ) {
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get user by ID (admin only)")
-    fun getById(@PathVariable id: String): UserResponse = userService.getById(id)
+    fun getById(@PathVariable id: String): UserResponse =
+        userMapper.toResponse(userService.getById(id))
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
     @Operation(summary = "Get current user info")
     fun getCurrentUser(@AuthenticationPrincipal user: UserDetails): UserResponse =
-        userService.findByUsername(user.username)
+        userMapper.toResponse(userService.findByUsername(user.username))
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a new user (admin only)")
     fun create(@Valid @RequestBody request: UserRequest): UserResponse =
-        userService.create(request)
+        userMapper.toResponse(userService.create(request))
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.name")
@@ -44,7 +48,8 @@ class UserController(
     fun update(
         @PathVariable id: String,
         @Valid @RequestBody request: UserRequest
-    ): UserResponse = userService.update(id, request)
+    ): UserResponse =
+        userMapper.toResponse(userService.update(id, request))
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -55,5 +60,6 @@ class UserController(
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all users (admin only)")
-    fun getAll(): List<UserResponse> = userService.getAll()
+    fun getAll(): List<UserResponse> =
+        userService.getAll().map(userMapper::toResponse)
 }

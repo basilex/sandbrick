@@ -1,7 +1,6 @@
 package com.sandbrick.sbp.service
 
 import com.sandbrick.sbp.api.v1.user.dto.UserRequest
-import com.sandbrick.sbp.api.v1.user.dto.UserResponse
 import com.sandbrick.sbp.config.AppProperties
 import com.sandbrick.sbp.domain.User
 import com.sandbrick.sbp.exception.DuplicateEntityException
@@ -20,16 +19,14 @@ class UserService(
     private val roleRepository: RoleRepository,
     private val passwordEncoder: PasswordEncoder
 ) {
-    fun getAll(): List<UserResponse> =
-        userRepository.findAll().map { it.toResponse() }
+    fun getAll(): List<User> = userRepository.findAll()
 
-    fun getById(id: String): UserResponse =
+    fun getById(id: String): User =
         userRepository.findById(id)
             .orElseThrow { ResourceNotFoundException("User with id $id not found") }
-            .toResponse()
 
     @Transactional
-    fun create(request: UserRequest): UserResponse {
+    fun create(request: UserRequest): User {
         if (userRepository.existsByUsername(request.username)) {
             throw DuplicateEntityException("Username '${request.username}' already exists")
         }
@@ -39,41 +36,44 @@ class UserService(
         if (request.password.length < appProperties.validation.passwordMinLength) {
             throw ValidationException("Password min length '${appProperties.validation.passwordMinLength}' failed")
         }
+
         val roles = request.roles.map { roleName ->
             roleRepository.findByName(roleName)
                 ?: throw ResourceNotFoundException("Role '$roleName' not found")
-        }.toMutableSet()
+        }.toSet()
 
-        val user = User(
+        val encodedPassword = passwordEncoder.encode(request.password)
+        return User(
             username = request.username,
             email = request.email,
-            password = passwordEncoder.encode(request.password),
-            roles = roles
-        )
-        return userRepository.save(user).toResponse()
+            password = encodedPassword,
+            roles = roles.toMutableSet()
+        ).let { userRepository.save(it) }
     }
 
     @Transactional
-    fun update(id: String, request: UserRequest): UserResponse {
+    fun update(id: String, request: UserRequest): User {
         val user = userRepository.findById(id)
             .orElseThrow { ResourceNotFoundException("User with id $id not found") }
+
         if ((user.username != request.username) && userRepository.existsByUsername(request.username)) {
             throw DuplicateEntityException("Username '${request.username}' already exists")
         }
         if ((user.email != request.email) && userRepository.existsByEmail(request.email)) {
             throw DuplicateEntityException("Email '${request.email}' already exists")
         }
+
         val roles = request.roles.map { roleName ->
             roleRepository.findByName(roleName)
                 ?: throw ResourceNotFoundException("Role '$roleName' not found")
-        }.toMutableSet()
+        }.toSet()
 
         user.username = request.username
         user.email = request.email
         user.password = passwordEncoder.encode(request.password)
-        user.roles = roles
+        user.roles = roles.toMutableSet()
 
-        return userRepository.save(user).toResponse()
+        return userRepository.save(user)
     }
 
     @Transactional
@@ -84,17 +84,7 @@ class UserService(
         userRepository.deleteById(id)
     }
 
-    @Transactional
-    fun findByUsername(username: String): UserResponse {
-        val user = userRepository.findByUsername(username)
+    fun findByUsername(username: String): User =
+        userRepository.findByUsername(username)
             ?: throw ResourceNotFoundException("User with username '$username' not found")
-        return user.toResponse()
-    }
-
-    private fun User.toResponse() = UserResponse(
-        id = id,
-        username = username,
-        email = email,
-        roles = roles.map { it.name }.toSet()
-    )
 }

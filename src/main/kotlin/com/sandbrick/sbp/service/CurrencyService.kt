@@ -1,46 +1,49 @@
 package com.sandbrick.sbp.service
 
 import com.sandbrick.sbp.api.v1.currency.dto.CurrencyRequest
-import com.sandbrick.sbp.api.v1.currency.dto.CurrencyResponse
 import com.sandbrick.sbp.domain.Currency
-import com.sandbrick.sbp.exception.DuplicateEntityException
 import com.sandbrick.sbp.exception.ResourceNotFoundException
 import com.sandbrick.sbp.repository.CurrencyRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CurrencyService(
-    private val repository: CurrencyRepository
+    private val currencyRepository: CurrencyRepository
 ) {
-    fun create(request: CurrencyRequest): CurrencyResponse {
-        if (repository.existsByCode(request.code)) {
-            throw DuplicateEntityException("Currency with code ${request.code} already exists")
-        }
+    @Transactional
+    fun create(request: CurrencyRequest): Currency {
         val currency = Currency(
-            code = request.code.uppercase(),
             name = request.name,
+            code = request.code,
             symbol = request.symbol
         )
-        return repository.save(currency).toResponse()
+        return currencyRepository.save(currency)
     }
 
-    fun update(id: String, request: CurrencyRequest): CurrencyResponse {
-        val currency = repository.findById(id).orElseThrow { ResourceNotFoundException("Currency with id $id not found") }
-        val updated = currency.copy(
-            name = request.name,
-            symbol = request.symbol
-        )
-        return repository.save(updated).toResponse()
-    }
-
-    fun delete(id: String) {
-        if (!repository.existsById(id)) {
-            throw ResourceNotFoundException("Currency with id $id not found")
+    @Transactional
+    fun update(id: String, request: CurrencyRequest): Currency {
+        val currency = currencyRepository.findById(id).orElseThrow {
+            ResourceNotFoundException("Currency with id $id not found")
         }
-        repository.deleteById(id)
+        currency.name = request.name
+        currency.code = request.code
+        currency.symbol = request.symbol
+        return currencyRepository.save(currency)
     }
 
-    fun getAll(): List<CurrencyResponse> = repository.findAll().map { it.toResponse() }
+    @Transactional
+    fun delete(id: String) {
+        currencyRepository.deleteById(id)
+    }
 
-    private fun Currency.toResponse() = CurrencyResponse(id, code, name, symbol)
+    fun getAllPaged(page: Int, size: Int): Page<Currency> {
+        val pageable = PageRequest.of(page, size, Sort.by("name").ascending())
+        return currencyRepository.findAll(pageable)
+    }
+
+    fun getAll(): List<Currency> = currencyRepository.findAll(Sort.by("name").ascending())
 }

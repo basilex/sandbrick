@@ -1,8 +1,6 @@
 package com.sandbrick.sbp.service
 
 import com.sandbrick.sbp.api.v1.profile.dto.ProfileRequest
-import com.sandbrick.sbp.api.v1.profile.dto.ProfileResponse
-import com.sandbrick.sbp.config.AppProperties
 import com.sandbrick.sbp.domain.Profile
 import com.sandbrick.sbp.exception.ResourceNotFoundException
 import com.sandbrick.sbp.repository.ProfileRepository
@@ -12,22 +10,21 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ProfileService(
-    private val props: AppProperties,
     private val profileRepository: ProfileRepository,
     private val userRepository: UserRepository
 ) {
-    fun getById(id: String): ProfileResponse =
-        profileRepository.findById(id)
-            .orElseThrow { ResourceNotFoundException("Profile not found") }
-            .toResponse()
 
-    fun getAll(): List<ProfileResponse> =
-        profileRepository.findAll().map { it.toResponse() }
+    fun getAll(): List<Profile> =
+        profileRepository.findAll()
+
+    fun getById(id: String): Profile =
+        profileRepository.findById(id)
+            .orElseThrow { ResourceNotFoundException("Profile with id $id not found") }
 
     @Transactional
-    fun create(request: ProfileRequest): ProfileResponse {
+    fun create(request: ProfileRequest): Profile {
         val user = userRepository.findById(request.userId)
-            .orElseThrow { ResourceNotFoundException("User not found") }
+            .orElseThrow { ResourceNotFoundException("User with id ${request.userId} not found") }
 
         val profile = Profile(
             firstName = request.firstName,
@@ -36,35 +33,27 @@ class ProfileService(
             avatarUrl = request.avatarUrl,
             user = user
         )
-        return profileRepository.save(profile).toResponse()
+        return profileRepository.save(profile)
     }
 
     @Transactional
-    fun update(id: String, request: ProfileRequest): ProfileResponse {
+    fun update(id: String, request: ProfileRequest): Profile {
         val profile = profileRepository.findById(id)
-            .orElseThrow { ResourceNotFoundException("Profile not found") }
+            .orElseThrow { ResourceNotFoundException("Profile with id $id not found") }
 
         profile.firstName = request.firstName
         profile.lastName = request.lastName
         profile.phone = request.phone
         profile.avatarUrl = request.avatarUrl
 
-        return profileRepository.save(profile).toResponse()
+        return profileRepository.save(profile)
     }
 
     @Transactional
     fun delete(id: String) {
-        val profile = profileRepository.findById(id)
-            .orElseThrow { ResourceNotFoundException("Profile not found") }
-        profileRepository.delete(profile)
+        if (!profileRepository.existsById(id)) {
+            throw ResourceNotFoundException("Profile with id $id not found")
+        }
+        profileRepository.deleteById(id)
     }
-
-    private fun Profile.toResponse() = ProfileResponse(
-        id = id,
-        firstName = firstName,
-        lastName = lastName,
-        phone = phone,
-        avatarUrl = avatarUrl,
-        userId = userId
-    )
 }
