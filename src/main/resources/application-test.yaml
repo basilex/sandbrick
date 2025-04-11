@@ -1,0 +1,28 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/sbpdb_test
+    username: ${POSTGRES_USER:system}
+    password: ${POSTGRES_PASSWORD:passw0rd}
+    hikari:
+      auto-commit: true
+      maximum-pool-size: 10
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        jdbc.time_zone: UTC
+
+  flyway:
+    clean-disabled: false
+    baseline-on-migrate: true
+
+springdoc:
+  packages-to-scan: com.sandbrick.sbp

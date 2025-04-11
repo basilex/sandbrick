@@ -2,9 +2,11 @@ package com.sandbrick.sbp.service
 
 import com.sandbrick.sbp.api.v1.user.dto.UserRequest
 import com.sandbrick.sbp.api.v1.user.dto.UserResponse
+import com.sandbrick.sbp.config.AppProperties
 import com.sandbrick.sbp.domain.User
 import com.sandbrick.sbp.exception.DuplicateEntityException
 import com.sandbrick.sbp.exception.ResourceNotFoundException
+import com.sandbrick.sbp.exception.ValidationException
 import com.sandbrick.sbp.repository.RoleRepository
 import com.sandbrick.sbp.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -13,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserService(
+    private val appProperties: AppProperties,
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val passwordEncoder: PasswordEncoder
 ) {
-
     fun getAll(): List<UserResponse> =
         userRepository.findAll().map { it.toResponse() }
 
@@ -33,6 +35,9 @@ class UserService(
         }
         if (userRepository.existsByEmail(request.email)) {
             throw DuplicateEntityException("Email '${request.email}' already exists")
+        }
+        if (request.password.length < appProperties.validation.passwordMinLength) {
+            throw ValidationException("Password min length '${appProperties.validation.passwordMinLength}' failed")
         }
         val roles = request.roles.map { roleName ->
             roleRepository.findByName(roleName)

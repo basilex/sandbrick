@@ -1,53 +1,39 @@
-server:
-  port: 8081
-
 spring:
   profiles:
-    active: dev
+    active: ${SPRING_PROFILES_ACTIVE:dev}
   main:
     time-zone: UTC
   application:
     name: sandbrick
   datasource:
-    url: jdbc:postgresql://localhost:5432/sbpdb_dev
     driver-class-name: org.postgresql.Driver
-    initialization-mode: always
-    username: system
-    password: passw0rd
     hikari:
       auto-commit: true
       maximum-pool-size: 10
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        use_sql_comments: true
-        jdbc.time_zone: UTC
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:/db/schema.sql
-      data-locations: classpath:/db/data.sql
   jackson:
     time-zone: UTC
-#  flyway:
-#    enabled: true
-#    locations: classpath:/db/migrations
-springdoc:
-  packages-to-scan: com.sandbrick.sbp
-#  api-docs:
-#    path: /api/v1/docs/openapi.json
-#  swagger-ui:
-#    path: /api/v1/docs
-#    config-url: /api/v1/docs/openapi.json
+  config:
+    import: optional:.env[.properties]
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+
 logging:
   level:
     org.springframework.jdbc.datasource.init: DEBUG
+
+app:
+  validation:
+    first-name-min-length: 3
+    first-name-max-length: 255
+    last-name-min-length: 3
+    last-name-max-length: 255
+    password-min-length: ${APP_VALIDATION_PASSWORD_MIN_LENGTH:6}
+    password-max-length: 255
+    avatar-max-size: ${APP_VALIDATION_AVATAR_MAX_SIZE:2097152}
+  token:
+    access-minutes: ${ACCESS_TOKEN_EXPIRATION_MINUTES:15}
+    refresh-days: ${REFRESH_TOKEN_EXPIRATION_DAYS:7}

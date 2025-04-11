@@ -14,7 +14,7 @@ import java.time.OffsetDateTime
 class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleValidationException(ex: MethodArgumentNotValidException): ResponseEntity<Map<String, Any>> {
+    fun handleMethodArgumentException(ex: MethodArgumentNotValidException): ResponseEntity<Map<String, Any>> {
         val errors = ex.bindingResult.fieldErrors.associate { it.field to it.defaultMessage }
         return buildErrorResponse(
             status = HttpStatus.BAD_REQUEST,
@@ -82,6 +82,16 @@ class GlobalExceptionHandler {
             error = "Unauthorized",
             message = "Unauthorized",
             code = "UNAUTHORIZED"
+        )
+    }
+
+    @ExceptionHandler(ValidationException::class)
+    fun handleValidationException(ex: ValidationException): ResponseEntity<Map<String, Any>> {
+        return buildErrorResponse(
+            status = HttpStatus.BAD_REQUEST,
+            error = "Validation error",
+            message = "Validation error",
+            code = "VALIDATION"
         )
     }
 

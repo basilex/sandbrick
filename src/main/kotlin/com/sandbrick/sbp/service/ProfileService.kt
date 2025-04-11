@@ -2,6 +2,7 @@ package com.sandbrick.sbp.service
 
 import com.sandbrick.sbp.api.v1.profile.dto.ProfileRequest
 import com.sandbrick.sbp.api.v1.profile.dto.ProfileResponse
+import com.sandbrick.sbp.config.AppProperties
 import com.sandbrick.sbp.domain.Profile
 import com.sandbrick.sbp.exception.ResourceNotFoundException
 import com.sandbrick.sbp.repository.ProfileRepository
@@ -11,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ProfileService(
+    private val props: AppProperties,
     private val profileRepository: ProfileRepository,
     private val userRepository: UserRepository
 ) {
-
     fun getById(id: String): ProfileResponse =
         profileRepository.findById(id)
             .orElseThrow { ResourceNotFoundException("Profile not found") }
@@ -35,7 +36,6 @@ class ProfileService(
             avatarUrl = request.avatarUrl,
             user = user
         )
-
         return profileRepository.save(profile).toResponse()
     }
 

@@ -3,6 +3,7 @@ package com.sandbrick.sbp.service
 import com.sandbrick.sbp.api.v1.auth.dto.AuthResponse
 import com.sandbrick.sbp.api.v1.auth.dto.LoginRequest
 import com.sandbrick.sbp.api.v1.auth.dto.RegisterRequest
+import com.sandbrick.sbp.config.AppProperties
 import com.sandbrick.sbp.domain.User
 import com.sandbrick.sbp.domain.auth.TokenType
 import com.sandbrick.sbp.exception.DuplicateEntityException
@@ -17,6 +18,7 @@ import java.time.Instant
 
 @Service
 class AuthService(
+    private val appProperties: AppProperties,
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val passwordEncoder: PasswordEncoder,
@@ -63,8 +65,8 @@ class AuthService(
         val refreshToken = jwtService.generateToken(user, TokenType.REFRESH)
 
         val now = Instant.now()
-        val accessExpiry = now.plusSeconds(60 * 15) // 15 мин
-        val refreshExpiry = now.plusSeconds(60 * 60 * 24 * 7) // 7 дней
+        val accessExpiry = now.plusSeconds(appProperties.token.accessMinutes * 60)
+        val refreshExpiry = now.plusSeconds(appProperties.token.refreshDays * 24 * 60 * 60)
 
         tokenService.saveToken(user, accessToken, TokenType.ACCESS, accessExpiry)
         tokenService.saveToken(user, refreshToken, TokenType.REFRESH, refreshExpiry)

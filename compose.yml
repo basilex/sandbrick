@@ -1,39 +1,46 @@
-version: "3.8"
-
 services:
-  postgres:
-    image: postgres:17
-    container_name: postgres
+  db:
+    image: postgres:15
+    container_name: sandbrick-db
+    restart: always
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:5432"
+    command: postgres -c max_connections=250
     volumes:
-      - ./volume/postgres:/var/lib/postgresql/data
-    networks:
-      - app-network
+      - postgres_data:/var/lib/postgresql/data
 
-#  sandbrick:
-#    image: sandbrick:0.1.0
-#    container_name: sandbrick
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=dev
-#      - SERVER_PORT=${SERVER_PORT}
-#      - POSTGRES_USER=${POSTGRES_USER}
-#      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-#      - POSTGRES_DB=${POSTGRES_DB}
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - postgres
-#    networks:
-#      - app-network
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sandbrick-app
+    depends_on:
+      - db
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      SERVER_PORT: ${SERVER_PORT}
+      ACCESS_TOKEN_EXPIRATION_MINUTES: ${ACCESS_TOKEN_EXPIRATION_MINUTES}
+      REFRESH_TOKEN_EXPIRATION_DAYS: ${REFRESH_TOKEN_EXPIRATION_DAYS}
+      APP_VALIDATION_FIRST_NAME_MIN_LENGTH: ${APP_VALIDATION_FIRST_NAME_MIN_LENGTH}
+      APP_VALIDATION_FIRST_NAME_MAX_LENGTH: ${APP_VALIDATION_FIRST_NAME_MAX_LENGTH}
+      APP_VALIDATION_LAST_NAME_MIN_LENGTH: ${APP_VALIDATION_LAST_NAME_MIN_LENGTH}
+      APP_VALIDATION_LAST_NAME_MAX_LENGTH: ${APP_VALIDATION_LAST_NAME_MAX_LENGTH}
+      APP_VALIDATION_PASSWORD_MIN_LENGTH: ${APP_VALIDATION_PASSWORD_MIN_LENGTH}
+      APP_VALIDATION_PASSWORD_MAX_LENGTH: ${APP_VALIDATION_PASSWORD_MAX_LENGTH}
+      APP_VALIDATION_AVATAR_MAX_SIZE: ${APP_VALIDATION_AVATAR_MAX_SIZE}
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    env_file:
+      - .env.prod
 
-networks:
-  app-network:
-    driver: bridge
+volumes:
+  postgres_data:

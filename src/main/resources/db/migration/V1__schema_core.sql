@@ -1,23 +1,35 @@
--- === Roles ===
-INSERT INTO role (id, name, created_at, updated_at) VALUES
-  ('c7f0e0a1e9r0vlr3', 'ADMIN', CURRENT_TIMESTAMP AT TIME ZONE 'UTC', CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
-  ('c7f0e0a1e9r0vlr4', 'USER', CURRENT_TIMESTAMP AT TIME ZONE 'UTC', CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
-  ('c7f0e0a1e9r0vlr5', 'MANAGER', CURRENT_TIMESTAMP AT TIME ZONE 'UTC', CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
-  ('c7f0e0a1e9r0vlr6', 'OPERATOR', CURRENT_TIMESTAMP AT TIME ZONE 'UTC', CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
-  ('c7f0e0a1e9r0vlr7', 'REPORTER', CURRENT_TIMESTAMP AT TIME ZONE 'UTC', CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
-  ('c7f0e0a1e9r0vlr8', 'FINANCIER', CURRENT_TIMESTAMP AT TIME ZONE 'UTC', CURRENT_TIMESTAMP AT TIME ZONE 'UTC');
+-- ===================================
+-- V1__schema_core.sql
+-- Core schema: country, currency, country_currency
+-- ===================================
 
--- === Users (admin + basilex) ===
-INSERT INTO users (id, username, email, password, created_at, updated_at) VALUES
-  ('c7f0e0a1e9r0vlu1', 'admin', 'admin@sandbrick.com', '$2a$10$szngJ1FYvX1UvBoGCUYLM.XU7Ia6yCKkctLjYOZHXBrC0Ye7Dbqre', CURRENT_TIMESTAMP AT TIME ZONE 'UTC', CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
-  ('c7f0e0a1e9r0vlu2', 'basilex', 'basilex@sandbrick.com', '$2a$10$uxfxiZhM/s99JtZJtfr6I.t61ntFz8zxEMKxVc7qN66xN6VJwvErq', CURRENT_TIMESTAMP AT TIME ZONE 'UTC', CURRENT_TIMESTAMP AT TIME ZONE 'UTC');
+CREATE TABLE currency (
+    id VARCHAR(24) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    code VARCHAR(10) NOT NULL UNIQUE,
+    symbol VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
+);
 
--- === User-Role Mapping ===
-INSERT INTO user_role (user_id, role_id) VALUES
-  ('c7f0e0a1e9r0vlu1', 'c7f0e0a1e9r0vlr3'), -- admin -> ADMIN
-  ('c7f0e0a1e9r0vlu2', 'c7f0e0a1e9r0vlr4'); -- basilex -> USER
+CREATE TABLE country (
+    id VARCHAR(24) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    iso2 VARCHAR(2) NOT NULL UNIQUE,
+    iso3 VARCHAR(3) NOT NULL UNIQUE,
+    code VARCHAR(10) NOT NULL UNIQUE,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
+);
 
--- === Countries ===
+CREATE TABLE country_currency (
+    country_id VARCHAR(24) NOT NULL,
+    currency_id VARCHAR(24) NOT NULL,
+    PRIMARY KEY (country_id, currency_id),
+    FOREIGN KEY (country_id) REFERENCES country(id) ON DELETE CASCADE,
+    FOREIGN KEY (currency_id) REFERENCES currency(id) ON DELETE CASCADE
+);
+
 -- === Countries ===
 INSERT INTO country (id, name, iso2, iso3, code, created_at, updated_at) VALUES
   ('c7f0e0a1e9r0c001', 'Ukraine', 'UA', 'UKR', '380', CURRENT_TIMESTAMP AT TIME ZONE 'UTC', CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),

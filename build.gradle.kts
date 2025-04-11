@@ -35,11 +35,11 @@ dependencies {
 	implementation("io.github.cdimascio:dotenv-kotlin:6.3.1")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 
+	implementation("org.flywaydb:flyway-core")
+
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
-
-//	implementation("org.flywaydb:flyway-core:9.0.0")
 
 	runtimeOnly("org.postgresql:postgresql:42.7.2")
 

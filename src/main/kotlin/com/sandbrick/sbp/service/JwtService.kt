@@ -1,5 +1,6 @@
 package com.sandbrick.sbp.service
 
+import com.sandbrick.sbp.config.AppProperties
 import com.sandbrick.sbp.domain.User
 import com.sandbrick.sbp.domain.auth.TokenType
 import io.jsonwebtoken.Claims
@@ -11,7 +12,9 @@ import java.util.*
 import javax.crypto.SecretKey
 
 @Service
-class JwtService {
+class JwtService(
+    private val appProperties: AppProperties
+) {
 
     private val secretKey: SecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256)
     private val expirationMs: Long = 1000 * 60 * 60 * 24 // 24 hours
@@ -23,8 +26,8 @@ class JwtService {
         )
         val now = Date()
         val expiration = when (type) {
-            TokenType.ACCESS -> Date(now.time + 1000 * 60 * 15)           // 15 минут
-            TokenType.REFRESH -> Date(now.time + 1000 * 60 * 60 * 24 * 7) // 7 дней
+            TokenType.ACCESS -> Date(now.time + 1000 * 60 * appProperties.token.accessMinutes)
+            TokenType.REFRESH -> Date(now.time + 1000 * 60 * 60 * 24 * appProperties.token.refreshDays)
         }
         return Jwts.builder()
             .setClaims(claims)

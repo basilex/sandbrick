@@ -1,34 +1,32 @@
-DEV_ENV_FILE = .env.dev
-TEST_ENV_FILE = .env.test
-PROD_ENV_FILE = .env.prod
+# Application name (optional usage)
+APP_NAME = sandbrick
 
-APP_IMAGE_NAME = sandbrick:0.1.0
-NETWORK_NAME = app-network
-CONTAINER_NAME = postgres
-PORT = 5432
+# === Run Spring Boot in different profiles ===
+run-dev:
+	SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun --args='--spring.config.import=optional:.env.dev[.properties]'
+run-test:
+	SPRING_PROFILES_ACTIVE=test ./gradlew bootRun --args='--spring.config.import=optional:.env.test[.properties]'
+run-prod:
+	SPRING_PROFILES_ACTIVE=prod ./gradlew bootRun --args='--spring.config.import=optional:.env.prod[.properties]'
 
-.PHONY: up-dev up-test up-prod build
-
+# === Build the project ===
 build:
-	@docker build -t $(APP_IMAGE_NAME) .
-up-dev: build
-	@export $(cat $(DEV_ENV_FILE) | xargs) && docker-compose --env-file .env.dev up
-up-test: build
-	@export $(cat $(TEST_ENV_FILE) | xargs) && docker-compose --env-file .env.test up
-up-prod: build
-	@export $(cat $(PROD_ENV_FILE) | xargs) && docker-compose --env-file .env.prod up
+	./gradlew clean build
 
-.PHONY: down
-down:
-	@docker-compose down
+# === Build the project for docker env ===
+docker-build:
+	docker build -t sandbrick:0.1.0 .
+docker-up:
+	docker-compose --env-file .env.prod up
+docker-up-rebuild:
+	docker-compose --env-file .env.prod up --build
+docker-down:
+	docker-compose --env-file .env.prod down
+docker-logs:
+	docker-compose logs -f
 
-.PHONY: restart
-restart: down up-dev
+# === Run Flyway migrations using dev config ===
+migrate:
+	./gradlew flywayMigrate -Dspring.config.import=optional:.env.dev[.properties] -Dspring.profiles.active=dev
 
-.PHONY: status
-status:
-	@docker-compose ps
-
-.PHONY: clean
-clean:
-	@docker-compose down -v
+.PHONY: run-dev run-test run-prod build docker-build docker-up docker-up-rebuild docker-down docker-logs migrate
