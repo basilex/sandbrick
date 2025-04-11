@@ -85,8 +85,8 @@ Register
 ```
 POST /api/v1/auth/register
 {
-"username": "svetlana",
-"email": "sveta@domain.com",
+"username": "sepa",
+"email": "sepa@domain.com",
 "password": "password123"
 }
 ```
@@ -96,7 +96,7 @@ Login
 ```
 POST /api/v1/auth/login
 {
-"username": "svetlana",
+"username": "sepa",
 "password": "password123"
 }
 ```
@@ -117,6 +117,8 @@ POST /api/v1/auth/refresh
 ```
 
 📌 Notes
+
+Makefile added with useful entry points for dev process.
 
 Tokens are stored in a token table with revoked and expired flags.
 
