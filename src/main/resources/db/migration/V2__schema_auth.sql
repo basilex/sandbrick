@@ -63,8 +63,8 @@ INSERT INTO role (id, name, created_at, updated_at) VALUES
 
 -- === Users (admin + basilex) ===
 INSERT INTO users (id, username, email, password, created_at, updated_at) VALUES
-  ('c7f0e0a1e9r0vlu1', 'admin', 'admin@sandbrick.com', '$2a$10$szngJ1FYvX1UvBoGCUYLM.XU7Ia6yCKkctLjYOZHXBrC0Ye7Dbqre', CURRENT_TIMESTAMP AT TIME ZONE 'UTC', CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
-  ('c7f0e0a1e9r0vlu2', 'basilex', 'basilex@sandbrick.com', '$2a$10$uxfxiZhM/s99JtZJtfr6I.t61ntFz8zxEMKxVc7qN66xN6VJwvErq', CURRENT_TIMESTAMP AT TIME ZONE 'UTC', CURRENT_TIMESTAMP AT TIME ZONE 'UTC');
+  ('c7f0e0a1e9r0vlu1', 'admin', 'admin@sandbrick.com', '$2a$12$Fmhs2sE98g21OChf9sdPXudnDMmcub3ZxdYVCwd0e18SYNN.HKOJe', CURRENT_TIMESTAMP AT TIME ZONE 'UTC', CURRENT_TIMESTAMP AT TIME ZONE 'UTC'),
+  ('c7f0e0a1e9r0vlu2', 'basilex', 'basilex@sandbrick.com', '$2a$12$PAc9MeqSKgmVKtNfeJcBJOsyRi1H19FiIl13mm5xu759B3T31oNOK', CURRENT_TIMESTAMP AT TIME ZONE 'UTC', CURRENT_TIMESTAMP AT TIME ZONE 'UTC');
 
 -- === User-Role Mapping ===
 INSERT INTO user_role (user_id, role_id) VALUES

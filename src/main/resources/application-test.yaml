@@ -21,8 +21,11 @@ spring:
         jdbc.time_zone: UTC
 
   flyway:
-    clean-disabled: false
+    enabled: true
+    locations: classpath:/db/migration
     baseline-on-migrate: true
+    validate-on-migrate: true
+    clean-disabled: false
 
 springdoc:
   packages-to-scan: com.sandbrick.sbp

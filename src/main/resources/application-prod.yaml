@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/sbpdb_prod
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5433}/sbpdb_prod
     username: ${POSTGRES_USER:system}
     password: ${POSTGRES_PASSWORD:passw0rd}
     hikari:
@@ -37,4 +37,4 @@ springdoc:
 
 logging:
   level:
-    org.flywaydb.core: DEBUG
+    org.flywaydb.core: INFO
