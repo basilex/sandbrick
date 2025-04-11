@@ -25,7 +25,7 @@ spring:
     locations: classpath:/db/migration
     baseline-on-migrate: true
     validate-on-migrate: true
-    clean-disabled: false
+#    clean-disabled: false
 
 springdoc:
   packages-to-scan: com.sandbrick.sbp

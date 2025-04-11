@@ -15,16 +15,14 @@ import javax.crypto.SecretKey
 class JwtService(
     private val appProperties: AppProperties
 ) {
-
     private val secretKey: SecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256)
-    private val expirationMs: Long = 1000 * 60 * 60 * 24 // 24 hours
 
     fun generateToken(user: User, type: TokenType): String {
+        val now = Date()
         val claims = mutableMapOf<String, Any>(
             "roles" to user.roles.map { it.name },
             "type" to type.name.lowercase()
         )
-        val now = Date()
         val expiration = when (type) {
             TokenType.ACCESS -> Date(now.time + 1000 * 60 * appProperties.token.accessMinutes)
             TokenType.REFRESH -> Date(now.time + 1000 * 60 * 60 * 24 * appProperties.token.refreshDays)

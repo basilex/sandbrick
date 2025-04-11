@@ -12,16 +12,6 @@ import java.time.Instant
 class TokenService(
     private val tokenRepository: TokenRepository
 ) {
-    fun saveToken(user: User, tokenValue: String, type: TokenType, expiry: Instant): Token {
-        val token = Token(
-            type = type,
-            token = tokenValue,
-            expiryDate = expiry,
-            user = user
-        )
-        return tokenRepository.save(token)
-    }
-
     @Transactional
     fun findByToken(token: String): Token? =
         tokenRepository.findByToken(token)
@@ -45,6 +35,10 @@ class TokenService(
     }
 
     @Transactional
+    fun deleteAllUserTokens(user: User) {
+        tokenRepository.deleteAllByUser(user)
+    }
+    @Transactional
     fun revokeAllUserTokens(user: User) {
         val validTokens = tokenRepository.findAllValidTokensByUser(user.id)
         validTokens.forEach {
@@ -55,7 +49,13 @@ class TokenService(
     }
 
     @Transactional
-    fun deleteAllUserTokens(user: User) {
-        tokenRepository.deleteAllByUser(user)
+    fun saveToken(user: User, tokenValue: String, type: TokenType, expiry: Instant): Token {
+        val token = Token(
+            type = type,
+            token = tokenValue,
+            expiryDate = expiry,
+            user = user
+        )
+        return tokenRepository.save(token)
     }
 }

@@ -26,7 +26,7 @@ spring:
     baseline-on-migrate: true
     validate-on-migrate: true
     out-of-order: false
-    clean-disabled: true
+#    clean-disabled: true
 
   sql:
     init:
