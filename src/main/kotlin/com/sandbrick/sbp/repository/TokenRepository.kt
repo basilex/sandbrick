@@ -24,4 +24,17 @@ interface TokenRepository : JpaRepository<Token, String> {
      WHERE t.user.id = :userId AND t.expired = false AND t.revoked = false
     """)
     fun findAllValidTokensByUser(@Param("userId") userId: String): List<Token>
+
+    @Query("""
+    SELECT t FROM Token t
+     WHERE t.expiryDate > :now
+       AND (:revoked IS NULL OR t.revoked = :revoked)
+       AND (:type IS NULL OR t.type = :type)
+     """)
+    fun findActiveFiltered(
+        @Param("now") now: Instant,
+        @Param("revoked") revoked: Boolean?,
+        @Param("type") type: TokenType?,
+        pageable: Pageable
+    ): Page<Token>
 }

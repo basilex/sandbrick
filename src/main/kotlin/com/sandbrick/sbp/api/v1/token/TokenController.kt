@@ -1,6 +1,7 @@
 package com.sandbrick.sbp.api.v1.token
 
 import com.sandbrick.sbp.api.v1.token.dto.TokenResponse
+import com.sandbrick.sbp.domain.auth.TokenType
 import com.sandbrick.sbp.mapper.TokenMapper
 import com.sandbrick.sbp.service.TokenService
 import io.swagger.v3.oas.annotations.Operation
@@ -43,6 +44,17 @@ class TokenController(
         @RequestParam(defaultValue = "10") size: Int
     ): Page<TokenResponse> =
         tokenService.getActiveTokensPaged(page, size).map(tokenMapper::toResponse)
+
+    @GetMapping("/filtered")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get paginated active tokens with optional filters")
+    fun getFilteredActiveTokens(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "10") size: Int,
+        @RequestParam(required = false) revoked: Boolean?,
+        @RequestParam(required = false) type: TokenType?
+    ): Page<TokenResponse> =
+        tokenService.getFilteredActiveTokens(page, size, revoked, type).map(tokenMapper::toResponse)
 
     @GetMapping("/user/{userId}")
     @PreAuthorize("hasRole('ADMIN')")

@@ -79,6 +79,17 @@ class TokenService(
         return tokenRepository.findByExpiryDateAfter(now, pageable)
     }
 
+    fun getFilteredActiveTokens(
+        page: Int,
+        size: Int,
+        revoked: Boolean?,
+        type: TokenType?
+    ): Page<Token> {
+        val pageable = PageRequest.of(page, size, Sort.by("expiryDate").descending())
+        val now = Instant.now()
+        return tokenRepository.findActiveFiltered(now, revoked, type, pageable)
+    }
+
     fun getValidTokensByUser(userId: String): List<Token> =
         tokenRepository.findAllValidTokensByUser(userId)
 
