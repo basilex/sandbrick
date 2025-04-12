@@ -22,7 +22,7 @@
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/your-org/sandbrick.git
+git clone https://github.com/basilex/sandbrick.git
 
 # 2. Build and start in dev mode
 make build
