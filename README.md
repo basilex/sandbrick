@@ -1,54 +1,95 @@
-# Sandbrick Platform
+# 🧱 Sandbrick
 
-**Sandbrick** is a clean, secure and extendable backend foundation designed for corporate systems, internal tools, and enterprise-level applications. Built with Kotlin and Spring Boot, it emphasizes clarity, modularity, and scalability.
-
----
-
-## 🧱 Stack
-
-- **Language**: Kotlin 1.9
-- **Framework**: Spring Boot 3.2
-- **Database**: PostgreSQL 15+
-- **ORM**: JPA (Hibernate)
-- **Migrations**: Flyway
-- **Security**: Spring Security + JWT
-- **Build Tool**: Gradle (KTS)
-- **Docs**: Swagger/OpenAPI 3 (SpringDoc)
-- **Dotenv**: `dotenv-kotlin` for local/dev config injection
+**Sandbrick** is a modern, modular backend system built with Kotlin and Spring Boot. Designed for enterprise-grade extensibility and clarity, it provides a solid foundation for secure user management, token-based authentication, and multi-role workflows.
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Features
+
+- ✅ Kotlin + Spring Boot 3.2
+- ✅ REST API with Swagger/OpenAPI docs
+- ✅ JWT-based Authentication (Access + Refresh tokens)
+- ✅ Role-based Authorization (`ADMIN`, `USER`, etc.)
+- ✅ Flyway Migrations
+- ✅ Profile and Contact management
+- ✅ PostgreSQL & Docker support
+- ✅ Clean Architecture with DTO → Mapper → Entity pattern
+- ✅ Extensible design ready for microservices
+
+---
+
+## 📁 Project Structure
+
+```plaintext
+.
+├── build.gradle.kts           # Gradle build configuration
+├── Dockerfile                 # Docker image definition
+├── docker-compose.yaml        # Local dev container config
+├── Makefile                   # CLI task automation
+├── .env.*                     # Profile-specific environment configs
+├── src/
+│   ├── main/
+│   │   ├── kotlin/
+│   │   │   └── com/sandbrick/sbp/
+│   │   │       ├── api/           # REST controllers & DTOs
+│   │   │       ├── config/        # App config (security, props, etc.)
+│   │   │       ├── domain/        # JPA entities
+│   │   │       ├── mapper/        # DTO ↔ Entity mappers
+│   │   │       ├── repository/    # Spring Data JPA interfaces
+│   │   │       ├── service/       # Business logic
+│   │   │       └── util/          # Utilities (ID gen, extensions, etc.)
+│   ├── resources/
+│   │   ├── application-*.yaml    # Per-profile configs
+│   │   └── db/migration/         # Flyway SQL migrations
+└── README.md
+```
+
+### 📚 API Docs
+
+API is documented with OpenAPI 3 / Swagger UI.
+
+🔐 All endpoints require authentication via Bearer tokens (Authorization: Bearer <token>)
+
+### 🧪 Running Locally
+
+### Run development server with dev profile
 
 ```bash
-# 1. Clone the repo
-git clone https://github.com/basilex/sandbrick.git
-
-# 2. Build and start in dev mode
-make build
 make run-dev
+```
 
-# 3. Run DB migrations (dev)
-make migrate-up
-make docker-build
+### Run PostgreSQL + app in Docker
+
+```bash
 make docker-up
 ```
-You’ll need .env.dev, .env.test, and .env.prod files configured accordingly.
 
-🛠️ Main Features
+See .env.dev, .env.prod, .env.test for configuration.
 
-## Robust user and role management
+### 🔧 Migration & Database
 
-- JWT-based auth system (access + refresh)
-- Profile and contact model with validation
-- Flexible contact types (email, phone, messenger...)
-- Flyway-controlled migrations and data seeding
-- Swagger documentation with OpenAPI annotations
-- Clean service/repository structure
-- Security layer with fine-grained access controls
+```bash
+# Run migrations (Flyway) for dev profile
+make migrate-up
 
-# 📚 Roadmap
-See ROADMAP.md for future features.
+# Clean dev DB (⚠ dangerous!)
+make migrate-down
+```
 
-# 📄 License
-MIT License. See LICENSE for more information.
+### 🌍 Live Preview
+
+🧱 Hosted with HubSpot Landing Pages
+
+### 📌 Roadmap
+See ROADMAP.md for detailed feature planning, tech debt, and goals.
+
+### 📄 Legal & Guidelines
+
+- License (MIT)
+- Contribution Guidelines
+- Code of Conduct
+- Security Policy
+
+### 🤝 Maintainers
+Built by @basilex with ❤️
+

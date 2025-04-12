@@ -1,81 +1,80 @@
-# 🧭 Sandbrick Roadmap
-
-This file outlines the key development phases and upcoming milestones for the Sandbrick platform.  
-The goal is to provide a clear, maintainable backend system, with strong security and a clean API-first design.
 
 ---
 
-## ✅ Phase 1: Foundation (Completed)
+### ✅ `ROADMAP.md`
 
-- [x] Project skeleton with Gradle + Kotlin + Spring Boot
-- [x] PostgreSQL + Flyway DB versioning
-- [x] Clean domain-driven structure (Entity, DTO, Mapper, Controller, Service)
-- [x] Role & User management
-- [x] JWT-based authentication (Access + Refresh tokens)
-- [x] Contact system with validation & flexible types (Email, Phone, etc.)
-- [x] Swagger/OpenAPI documentation
-- [x] Docker integration for production
-- [x] Admin UI-ready APIs (filtered, paginated)
-- [x] Security layers & custom access policies
+
+# 📍 Sandbrick Roadmap
+
+This document outlines the current and upcoming priorities for the Sandbrick backend.
 
 ---
 
-## 🔄 Phase 2: Enhancement (In Progress)
+## ✅ Recently Completed
 
-- [ ] Complete Swagger annotations across all DTOs and endpoints
-- [ ] Add full audit logging (create/update/delete timestamps + user context)
-- [ ] Global validation rules from `AppProperties` (e.g. min/max password length)
-- [ ] Fine-grained exception handling (custom handlers, error codes)
-- [ ] Admin UI layout: decision on frontend stack (e.g. Thymeleaf vs React)
-- [ ] Sample seed data and migrations in test profile
-
----
-
-## 🔐 Phase 3: Advanced Auth & Security
-
-- [ ] Password reset flow
-- [ ] Email verification on signup
-- [ ] Multi-factor authentication (2FA with TOTP or Email/SMS)
-- [ ] Session-based token revocation
-- [ ] Account lockout after multiple failed logins
+- ✅ Profile → Contact refactor (multi-channel contact support)
+- ✅ Swagger documentation added across DTOs and controllers
+- ✅ Flyway migration modularity with `.env`-based profiles
+- ✅ Token management: filtering, pagination, admin control
+- ✅ SecurityService abstraction per entity (Contact, Profile, etc.)
+- ✅ Full Makefile automation for dev/test/prod environments
 
 ---
 
-## 🌐 Phase 4: Web Interface
+## 🧱 Core Development Milestones
 
-- [ ] Define clean corporate UI guidelines (branding, color, layout)
-- [ ] Setup template engine or SPA frontend (Bootstrap, Thymeleaf, or React)
-- [ ] Develop reusable form components (inputs, selects, error handling)
-- [ ] Integrate with existing backend via REST
-- [ ] Implement login, registration, dashboard, admin panels
+### 1. Swagger Documentation Cleanup
+- [ ] Complete consistent `@Schema` annotations
+- [ ] Validate all DTO examples and constraints
 
----
+### 2. Backend Auth Enhancements
+- [ ] Password Reset Flow
+- [ ] Email Verification Flow
+- [ ] 2FA via Authenticator App or SMS/Email
 
-## 📦 Phase 5: Deployment & Monitoring
+### 3. Web Interface Strategy
+- [x] Bootstrap theme evaluation (e.g. SB Admin Pro)
+- [ ] Decide on templating engine (e.g. Thymeleaf vs REST frontend)
+- [ ] Define design guidelines (strict, minimal, consistent)
+- [ ] Build responsive authentication and dashboard UI
 
-- [ ] Environment-specific Helm/Docker configurations
-- [ ] Production-ready Docker builds
-- [ ] Health checks, metrics, and actuator endpoints
-- [ ] Setup basic monitoring with Prometheus/Grafana or ELK
-
----
-
-## ✨ Nice to Have
-
-- [ ] Internationalization (i18n) support
-- [ ] Event-based architecture with Spring Events or Kafka
-- [ ] Admin dashboard metrics
-- [ ] Custom email templates for notifications
-- [ ] Rate limiting, brute force prevention
-
----
-
-## 🤝 Contribution Guidelines
-
-Please read our [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before opening issues or pull requests.
+### 4. Transition to Microservices (Future Phase)
+- [ ] Define service boundaries:
+  - API Gateway
+  - Auth Service
+  - Mailer
+  - Audit Logging
+  - User Service
+- [ ] Add Kafka support for async communication
+- [ ] Service discovery & configuration (e.g. Spring Cloud, Consul, Eureka)
 
 ---
 
-Last updated: `April 12, 2025`
+## 📎 Organizational & Infrastructure
 
-Maintained by: `@basilex` and Sandbrick contributors
+- [x] LICENSE (MIT)
+- [x] CONTRIBUTING.md
+- [x] CODE_OF_CONDUCT.md
+- [x] SECURITY.md
+- [x] GitHub Actions (future CI/CD)
+- [ ] GitHub Discussions (community support)
+
+---
+
+## 🧠 Brainstorm & Ideas
+
+- Invite-based registration
+- Organization / Teams per user
+- Rate-limiting on login & token refresh
+- i18n/l10n support
+- Extended contact types: Slack, Discord, LinkedIn
+
+---
+
+## 🙌 Contributions
+
+We welcome contributions! See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for how to get started.
+
+---
+
+_Last updated: April 2025_

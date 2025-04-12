@@ -1,33 +1,26 @@
-# Contributor Covenant Code of Conduct
+# Code of Conduct
 
-## Our Pledge
+All participants in this project are expected to adhere to the following Code of Conduct. This helps create a safe, respectful, and productive environment for everyone.
 
-We as contributors and maintainers pledge to make participation in our project a welcoming, harassment-free experience for everyone.
+## 🌟 Our Pledge
 
-## Our Standards
+We are committed to providing a welcoming and inclusive experience for all, regardless of age, gender, race, disability, or background.
 
-Examples of behavior that contributes to a positive environment include:
-- Using inclusive language
-- Being respectful of differing viewpoints
-- Accepting constructive criticism
+## ✅ Expected Behavior
 
-Examples of unacceptable behavior:
-- Insults or personal attacks
-- Trolling or deliberate disruption
-- Publishing others' private information without permission
+- Use welcoming and inclusive language.
+- Respect differing viewpoints and experiences.
+- Accept constructive criticism graciously.
+- Show empathy towards other community members.
 
-## Our Responsibilities
+## ❌ Unacceptable Behavior
 
-Maintainers are responsible for clarifying the standards of acceptable behavior and may take appropriate and fair corrective action in response to unacceptable behavior.
+- Harassment, discrimination, or abuse of any kind.
+- Trolling, insulting or derogatory comments.
+- Publishing others' private information without consent.
 
-## Scope
+## 📞 Enforcement
 
-This Code of Conduct applies in all project spaces — GitHub issues, PRs, discussions, and other communication channels.
+Violations may result in temporary or permanent removal from the project. To report abuse or inappropriate behavior, contact the maintainers privately.
 
-## Enforcement
-
-Violations may be reported by contacting the maintainers at **code@sandbrick.com**. All reports will be handled with discretion.
-
-## Attribution
-
-This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org).
+This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org/).

@@ -1,27 +1,28 @@
 # Security Policy
 
-## Reporting a Vulnerability
+We take security seriously. If you discover a vulnerability in Sandbrick, please report it responsibly.
 
-If you discover a security vulnerability in **Sandbrick**, please do **not** create a public GitHub issue. Instead, report it privately.
+## 🔐 Reporting a Vulnerability
 
-### How to report
+Please email us at **security@sandbrick.dev** with the following information:
 
-Send an email to: **security@sandbrick.com**
+- Description of the vulnerability
+- Steps to reproduce
+- Potential impact
+- Suggested fix (if any)
 
-Please include the following:
-- A clear description of the issue
-- Steps to reproduce (if applicable)
-- Impact assessment (if known)
+We will respond as quickly as possible and keep your report confidential.
 
-We will acknowledge your report within **3 business days**, investigate, and take appropriate action.
+## 🛡️ Supported Versions
 
-## Supported Versions
+| Version    | Supported          |
+|------------|--------------------|
+| `main`     | ✅                 |
+| `dev`      | ✅ (unstable)      |
+| Older tags | ❌ Not supported   |
 
-| Version | Supported |
-| ------- | --------- |
-| 0.1.x   | ✅         |
-| < 0.1   | ❌         |
+## 📢 Public Disclosure
 
-## Responsible Disclosure
+Please do **not** file public GitHub issues for security bugs. Instead, contact us via the email above and wait for a coordinated fix and announcement.
 
-We ask you to act in good faith, and give us a chance to address the issue before any public disclosure. We'll credit your contribution if you wish.
+Thank you for helping keep Sandbrick secure!
