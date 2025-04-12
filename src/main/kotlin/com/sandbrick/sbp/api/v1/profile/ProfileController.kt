@@ -42,7 +42,7 @@ class ProfileController(
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or @profileSecurity.isOwner(#id, authentication.name)")
     @Operation(summary = "Update an existing profile")
     fun update(@PathVariable id: String, @Valid @RequestBody request: ProfileRequest): ProfileResponse {
         val profile = profileService.update(id, request)
@@ -50,7 +50,7 @@ class ProfileController(
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or @profileSecurity.isOwner(#id, authentication.name)")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete a profile by ID")
     fun delete(@PathVariable id: String) =

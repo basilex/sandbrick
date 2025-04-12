@@ -3,8 +3,8 @@ package com.sandbrick.sbp.security
 import com.sandbrick.sbp.repository.ContactRepository
 import org.springframework.stereotype.Component
 
-@Component
-class SecurityService(
+@Component("contactSecurity")
+class ContactSecurity(
     private val contactRepository: ContactRepository
 ) {
     fun isOwner(contactId: String, username: String): Boolean =
