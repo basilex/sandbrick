@@ -1,13 +1,16 @@
 package com.sandbrick.sbp.service
 
 import com.sandbrick.sbp.api.v1.user.dto.UserRequest
+import com.sandbrick.sbp.api.v1.user.dto.UserDetailedResponse
+import com.sandbrick.sbp.api.v1.user.dto.UserSummaryResponse
 import com.sandbrick.sbp.config.AppProperties
-import com.sandbrick.sbp.domain.User
 import com.sandbrick.sbp.exception.DuplicateEntityException
 import com.sandbrick.sbp.exception.ResourceNotFoundException
 import com.sandbrick.sbp.exception.ValidationException
+import com.sandbrick.sbp.mapper.UserMapper
 import com.sandbrick.sbp.repository.RoleRepository
 import com.sandbrick.sbp.repository.UserRepository
+import org.springframework.data.domain.Sort
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -17,54 +20,58 @@ class UserService(
     private val appProperties: AppProperties,
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val userMapper: UserMapper
 ) {
-    fun getAll(): List<User> = userRepository.findAll()
+    fun getAllSummaries(): List<UserSummaryResponse> =
+        userRepository
+            .findAll(Sort.by("username").ascending())
+            .map(userMapper::toSummary)
 
-    fun getById(id: String): User =
-        userRepository.findById(id)
+    fun getAllDetailed(): List<UserDetailedResponse> =
+        userRepository
+            .findAll(Sort.by("username").ascending())
+            .map(userMapper::toDetailed)
+
+    fun getById(id: String): UserDetailedResponse =
+        userRepository
+            .findById(id)
             .orElseThrow { ResourceNotFoundException("User with id $id not found") }
+            .let(userMapper::toDetailed)
 
     @Transactional
-    fun create(request: UserRequest): User {
+    fun create(request: UserRequest): UserDetailedResponse {
         if (userRepository.existsByUsername(request.username)) {
             throw DuplicateEntityException("Username '${request.username}' already exists")
         }
+
         if (request.password.length < appProperties.validation.passwordMinLength) {
             throw ValidationException("Password min length '${appProperties.validation.passwordMinLength}' failed")
         }
-
-        val roles = request.roles.map { roleName ->
-            roleRepository.findByName(roleName)
-                ?: throw ResourceNotFoundException("Role '$roleName' not found")
-        }.toSet()
-
+        val roles = getRolesFromRequest(request.roles)
         val encodedPassword = passwordEncoder.encode(request.password)
-        return User(
-            username = request.username,
-            password = encodedPassword,
-            roles = roles.toMutableSet()
-        ).let { userRepository.save(it) }
+
+        val user = userMapper.toEntity(request, roles, encodedPassword)
+        return userRepository.save(user).let(userMapper::toDetailed)
     }
 
     @Transactional
-    fun update(id: String, request: UserRequest): User {
-        val user = userRepository.findById(id)
+    fun update(id: String, request: UserRequest): UserDetailedResponse {
+        val user = userRepository
+            .findById(id)
             .orElseThrow { ResourceNotFoundException("User with id $id not found") }
 
-        if ((user.username != request.username) && userRepository.existsByUsername(request.username)) {
+        if (user.username != request.username && userRepository.existsByUsername(request.username)) {
             throw DuplicateEntityException("Username '${request.username}' already exists")
         }
-        val roles = request.roles.map { roleName ->
-            roleRepository.findByName(roleName)
-                ?: throw ResourceNotFoundException("Role '$roleName' not found")
-        }.toSet()
+        val roles = getRolesFromRequest(request.roles)
+        val encodedPassword = passwordEncoder.encode(request.password)
 
         user.username = request.username
-        user.password = passwordEncoder.encode(request.password)
+        user.password = encodedPassword
         user.roles = roles.toMutableSet()
 
-        return userRepository.save(user)
+        return userRepository.save(user).let(userMapper::toDetailed)
     }
 
     @Transactional
@@ -75,7 +82,14 @@ class UserService(
         userRepository.deleteById(id)
     }
 
-    fun findByUsername(username: String): User =
+    fun findByUsername(username: String): UserDetailedResponse =
         userRepository.findByUsername(username)
-            ?: throw ResourceNotFoundException("User with username '$username' not found")
+            ?.let(userMapper::toDetailed)
+            ?: throw ResourceNotFoundException("User '$username' not found")
+
+    private fun getRolesFromRequest(roleNames: Set<String>) =
+        roleNames.map { roleName ->
+            roleRepository.findByName(roleName)
+                ?: throw ResourceNotFoundException("Role '$roleName' not found")
+        }.toSet()
 }

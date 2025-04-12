@@ -1,8 +1,8 @@
 package com.sandbrick.sbp.api.v1.user
 
+import com.sandbrick.sbp.api.v1.user.dto.UserDetailedResponse
 import com.sandbrick.sbp.api.v1.user.dto.UserRequest
-import com.sandbrick.sbp.api.v1.user.dto.UserResponse
-import com.sandbrick.sbp.mapper.UserMapper
+import com.sandbrick.sbp.api.v1.user.dto.UserSummaryResponse
 import com.sandbrick.sbp.service.UserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -19,47 +19,51 @@ import org.springframework.web.bind.annotation.*
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "User", description = "User management operations")
 class UserController(
-    private val userService: UserService,
-    private val userMapper: UserMapper
+    private val userService: UserService
 ) {
+    @GetMapping("/summary")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get summary info for all users")
+    fun getSummary(): List<UserSummaryResponse> =
+        userService.getAllSummaries()
+
+    @GetMapping("/detailed")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get detailed info for all users")
+    fun getAll(): List<UserDetailedResponse> =
+        userService.getAllDetailed()
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Get user by ID (admin only)")
-    fun getById(@PathVariable id: String): UserResponse =
-        userMapper.toResponse(userService.getById(id))
+    @Operation(summary = "Get user details by ID (admin only)")
+    fun getById(@PathVariable id: String): UserDetailedResponse =
+        userService.getById(id)
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    @Operation(summary = "Get current user info")
-    fun getCurrentUser(@AuthenticationPrincipal user: UserDetails): UserResponse =
-        userMapper.toResponse(userService.findByUsername(user.username))
+    @Operation(summary = "Get current authenticated user info")
+    fun getCurrentUser(@AuthenticationPrincipal user: UserDetails): UserDetailedResponse =
+        userService.findByUsername(user.username)
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a new user (admin only)")
-    fun create(@Valid @RequestBody request: UserRequest): UserResponse =
-        userMapper.toResponse(userService.create(request))
+    fun create(@Valid @RequestBody request: UserRequest): UserDetailedResponse =
+        userService.create(request)
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.name")
-    @Operation(summary = "Update a user by ID (admin or self)")
+    @Operation(summary = "Update user (admin or self)")
     fun update(
         @PathVariable id: String,
         @Valid @RequestBody request: UserRequest
-    ): UserResponse =
-        userMapper.toResponse(userService.update(id, request))
+    ): UserDetailedResponse = userService.update(id, request)
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "Delete a user by ID (admin only)")
-    fun delete(@PathVariable id: String) = userService.delete(id)
-
-    @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Get all users (admin only)")
-    fun getAll(): List<UserResponse> =
-        userService.getAll().map(userMapper::toResponse)
+    @Operation(summary = "Delete a user by ID")
+    fun delete(@PathVariable id: String) =
+        userService.delete(id)
 }

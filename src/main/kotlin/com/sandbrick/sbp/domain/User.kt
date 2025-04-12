@@ -28,5 +28,8 @@ class User(
     var roles: MutableSet<Role> = mutableSetOf(),
 
     @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true)
-    var profile: Profile? = null
+    var profile: Profile? = null,
+
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true)
+    var contacts: MutableSet<Contact> = mutableSetOf()
 ) : BaseAuditEntity()

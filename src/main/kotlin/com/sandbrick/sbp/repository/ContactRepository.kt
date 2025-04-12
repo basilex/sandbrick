@@ -9,7 +9,11 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 interface ContactRepository : JpaRepository<Contact, String> {
-    fun findAllByUserId(userId: String): List<Contact>
+//    alternative
+//    fun findAllByUser_Id(userId: String): List<Contact>
+
+    @Query("SELECT c FROM Contact c WHERE c.user.id = :userId")
+    fun findAllByUserId(@Param("userId") userId: String): List<Contact>
 
     @Query("""
     SELECT c FROM Contact c
