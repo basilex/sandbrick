@@ -15,7 +15,7 @@ class Profile(
     @Column(nullable = true)
     var lastName: String? = null,
 
-    @field:Size(max = 2048, message = "AvatarUrl must be from 3 to 255 characters")
+    @field:Size(max = 2048, message = "AvatarUrl must be from 3 to 2048 characters")
     @Column(nullable = true)
     var avatarUrl: String? = null,
 
