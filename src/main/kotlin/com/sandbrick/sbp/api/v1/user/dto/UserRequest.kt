@@ -12,12 +12,6 @@ data class UserRequest(
     @Schema(description = "Unique username", example = "johndoe")
     val username: String,
 
-    @field:NotBlank(message = "Email is required")
-    @field:Email(message = "Email must be valid")
-    @field:Size(min = 4, max = 255)
-    @Schema(description = "User email address", example = "john@example.com")
-    val email: String,
-
     @field:NotBlank(message = "Password is required")
     @field:Size(min = 8, max = 255)
     @Schema(description = "Raw password (will be hashed)", example = "strongpassword123")

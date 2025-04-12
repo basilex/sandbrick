@@ -14,7 +14,6 @@ class ProfileMapper {
             id = profile.id,
             firstName = profile.firstName,
             lastName = profile.lastName,
-            phone = profile.phone,
             avatarUrl = profile.avatarUrl,
             userId = profile.user.id
         )
@@ -23,7 +22,6 @@ class ProfileMapper {
         Profile(
             firstName = request.firstName,
             lastName = request.lastName,
-            phone = request.phone,
             avatarUrl = request.avatarUrl,
             user = user
         )

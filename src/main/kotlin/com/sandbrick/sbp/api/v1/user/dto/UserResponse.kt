@@ -10,9 +10,6 @@ data class UserResponse(
     @Schema(description = "Username", example = "johndoe")
     val username: String,
 
-    @Schema(description = "User email", example = "john@example.com")
-    val email: String,
-
     @Schema(description = "Roles assigned to the user", example = "[\"USER\", \"ADMIN\"]")
     val roles: Set<String>
 )

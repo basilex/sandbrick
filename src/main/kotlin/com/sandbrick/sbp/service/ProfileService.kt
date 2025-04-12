@@ -29,7 +29,6 @@ class ProfileService(
         val profile = Profile(
             firstName = request.firstName,
             lastName = request.lastName,
-            phone = request.phone,
             avatarUrl = request.avatarUrl,
             user = user
         )
@@ -43,7 +42,6 @@ class ProfileService(
 
         profile.firstName = request.firstName
         profile.lastName = request.lastName
-        profile.phone = request.phone
         profile.avatarUrl = request.avatarUrl
 
         return profileRepository.save(profile)

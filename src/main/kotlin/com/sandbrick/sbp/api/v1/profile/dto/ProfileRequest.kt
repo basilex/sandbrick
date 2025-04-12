@@ -11,9 +11,6 @@ data class ProfileRequest(
     @Schema(description = "User's last name", example = "Doe")
     val lastName: String? = null,
 
-    @Schema(description = "User's phone number", example = "+380931234567")
-    val phone: String? = null,
-
     @Schema(description = "URL of the user's avatar", example = "https://example.com/avatar.jpg")
     val avatarUrl: String? = null,
 

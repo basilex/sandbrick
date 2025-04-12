@@ -12,7 +12,6 @@ class UserMapper {
         UserResponse(
             id = user.id,
             username = user.username,
-            email = user.email,
             roles = user.roles.map { it.name }.toSet()
         )
 
@@ -22,7 +21,6 @@ class UserMapper {
         roles: Set<Role>
     ): User = User(
         username = request.username,
-        email = request.email,
         password = encodedPassword,
         roles = roles.toMutableSet()
     )

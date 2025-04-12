@@ -14,9 +14,6 @@ data class ProfileResponse(
     @Schema(description = "User's last name", example = "Doe")
     val lastName: String?,
 
-    @Schema(description = "User's phone number", example = "+380931234567")
-    val phone: String?,
-
     @Schema(description = "URL of the user's avatar", example = "https://example.com/avatar.jpg")
     val avatarUrl: String?,
 

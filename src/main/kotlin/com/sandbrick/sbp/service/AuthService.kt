@@ -31,15 +31,11 @@ class AuthService(
         if (userRepository.existsByUsername(request.username)) {
             throw DuplicateEntityException("Username already exists")
         }
-        if (userRepository.existsByEmail(request.email)) {
-            throw DuplicateEntityException("Email already exists")
-        }
         val defaultRole = roleRepository.findByName("USER")
             ?: throw ResourceNotFoundException("Default role USER not found")
 
         val user = User(
             username = request.username,
-            email = request.email,
             password = passwordEncoder.encode(request.password),
             roles = mutableSetOf(defaultRole)
         )

@@ -30,9 +30,6 @@ class UserService(
         if (userRepository.existsByUsername(request.username)) {
             throw DuplicateEntityException("Username '${request.username}' already exists")
         }
-        if (userRepository.existsByEmail(request.email)) {
-            throw DuplicateEntityException("Email '${request.email}' already exists")
-        }
         if (request.password.length < appProperties.validation.passwordMinLength) {
             throw ValidationException("Password min length '${appProperties.validation.passwordMinLength}' failed")
         }
@@ -45,7 +42,6 @@ class UserService(
         val encodedPassword = passwordEncoder.encode(request.password)
         return User(
             username = request.username,
-            email = request.email,
             password = encodedPassword,
             roles = roles.toMutableSet()
         ).let { userRepository.save(it) }
@@ -59,17 +55,12 @@ class UserService(
         if ((user.username != request.username) && userRepository.existsByUsername(request.username)) {
             throw DuplicateEntityException("Username '${request.username}' already exists")
         }
-        if ((user.email != request.email) && userRepository.existsByEmail(request.email)) {
-            throw DuplicateEntityException("Email '${request.email}' already exists")
-        }
-
         val roles = request.roles.map { roleName ->
             roleRepository.findByName(roleName)
                 ?: throw ResourceNotFoundException("Role '$roleName' not found")
         }.toSet()
 
         user.username = request.username
-        user.email = request.email
         user.password = passwordEncoder.encode(request.password)
         user.roles = roles.toMutableSet()
 

@@ -14,12 +14,6 @@ class User(
     @Column(nullable = false, unique = true)
     var username: String,
 
-    @field:Email(message = "Email should be valid")
-    @field:NotBlank(message = "Email is required")
-    @field:Size(min = 4, max = 255, message = "Email must be from 4 to 255 characters")
-    @Column(nullable = false, unique = true)
-    var email: String,
-
     @field:NotBlank(message = "Password is required")
     @field:Size(min = 6, max = 255, message = "Paassword must be from 6 to 255 characters")
     @Column(nullable = false)

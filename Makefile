@@ -33,7 +33,7 @@ docker-logs:
 # === Run Flyway migrations using dev config ===
 migrate-up:
 	env $(cat .env.dev | xargs) ./gradlew \
-		-Dflyway.cleanDisabled=true \
+		-Dflyway.cleanDisabled=false \
 		-Dspring.config.import=optional:.env.dev[.properties] \
 		-Dspring.profiles.active=dev flywayMigrate
 migrate-down:
