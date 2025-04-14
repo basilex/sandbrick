@@ -1,5 +1,6 @@
 package com.sandbrick.sbp.domain
 
+import com.sandbrick.sbp.domain.auth.ResetToken
 import com.sandbrick.sbp.domain.base.BaseAuditEntity
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
@@ -41,5 +42,13 @@ class User(
         fetch = FetchType.LAZY,
         orphanRemoval = true
     )
-    var contacts: MutableSet<Contact> = mutableSetOf()
+    var contacts: MutableSet<Contact> = mutableSetOf(),
+
+    @OneToMany(
+        mappedBy = "user",
+        cascade = [CascadeType.ALL],
+        fetch = FetchType.LAZY,
+        orphanRemoval = true
+    )
+    val resetTokens: MutableSet<ResetToken> = mutableSetOf()
 ) : BaseAuditEntity()
