@@ -34,7 +34,7 @@ class RoleController(
         ]
     )
     fun getById(
-        @Parameter(description = "ID of the role", example = "d1f5a7d2-8b39-47b9-bf1e-2f0d5f1c3d1c")
+        @Parameter(description = "ID of the role", example = "c7f0e0a1e9r0c030")
         @PathVariable id: String
     ): RoleResponse = roleMapper.toResponse(roleService.getById(id))
 
