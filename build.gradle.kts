@@ -15,7 +15,7 @@ plugins {
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
+		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
 
@@ -24,31 +24,43 @@ repositories {
 }
 
 dependencies {
+	// Core Spring Boot
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 
+	// Security crypto
 	implementation("org.springframework.security:spring-security-crypto")
 
+	// OpenAPI / Swagger
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
+	// JSON & Kotlin
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("io.github.cdimascio:dotenv-kotlin:6.3.1")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 
+	// Env file support
+	implementation("io.github.cdimascio:dotenv-kotlin:6.3.1")
+
+	// Flyway migrations
 	implementation("org.flywaydb:flyway-core")
 
+	// JWT (JSON Web Tokens)
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
+	// PostgreSQL driver
 	runtimeOnly("org.postgresql:postgresql:42.7.2")
 
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	// TESTING
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude(group = "org.junit.vintage", module = "junit-vintage-engine") // отключаем JUnit 4
+	}
+	testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
 }
 
 flyway {
@@ -68,7 +80,7 @@ allOpen {
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "21"
+		jvmTarget = "17"
 	}
 }
 

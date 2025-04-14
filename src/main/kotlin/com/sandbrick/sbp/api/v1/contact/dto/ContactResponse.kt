@@ -4,11 +4,19 @@ import com.sandbrick.sbp.domain.contact.ContactType
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.Instant
 
+@Schema(description = "Response model representing a user's contact information")
 data class ContactResponse(
-    @Schema(description = "Unique contact identifier", example = "c7f0e0a1e9r0abc1")
+
+    @Schema(
+        description = "Unique identifier for the contact",
+        example = "c7f0e0a1e9r0abc1"
+    )
     val id: String,
 
-    @Schema(description = "Associated user ID", example = "c7f0e0a1e9r0vlu2")
+    @Schema(
+        description = "ID of the user associated with this contact",
+        example = "c7f0e0a1e9r0vlu2"
+    )
     val userId: String,
 
     @Schema(
@@ -17,15 +25,27 @@ data class ContactResponse(
     )
     val type: ContactType,
 
-    @Schema(description = "Contact content", example = "john.doe@gmail.com")
+    @Schema(
+        description = "The actual contact content (e.g. phone number, email address)",
+        example = "john.doe@gmail.com"
+    )
     val content: String,
 
-    @Schema(description = "Is this the preferred contact method", example = "true")
+    @Schema(
+        description = "Whether this is the user's preferred contact method",
+        example = "true"
+    )
     val preferrable: Boolean,
 
-    @Schema(description = "Timestamp when the contact was created", example = "2025-04-11T12:00:00Z")
+    @Schema(
+        description = "Date and time when the contact was created",
+        example = "2025-04-11T12:00:00Z"
+    )
     val createdAt: Instant,
 
-    @Schema(description = "Timestamp of last update", example = "2025-04-11T12:30:00Z")
+    @Schema(
+        description = "Date and time when the contact was last updated",
+        example = "2025-04-11T12:30:00Z"
+    )
     val updatedAt: Instant
 )

@@ -9,21 +9,22 @@ import java.time.Instant
 @Entity
 @Table(name = "token")
 class Token(
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    var type: TokenType,  // <-- access / refresh
 
-    @field:Size(max = 512, message = "Token must be from 1 to 255 characters")
-    @Column(nullable = false, unique = true)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false, length = 32)
+    var type: TokenType,  // e.g. ACCESS or REFRESH
+
+    @field:Size(min = 1, max = 512, message = "Token must be between 1 and 512 characters")
+    @Column(name = "token", nullable = false, unique = true, length = 512)
     var token: String,
 
-    @Column(nullable = false)
+    @Column(name = "expired", nullable = false)
     var expired: Boolean = false,
 
-    @Column(nullable = false)
+    @Column(name = "revoked", nullable = false)
     var revoked: Boolean = false,
 
-    @Column(nullable = false)
+    @Column(name = "expiry_date", nullable = false)
     var expiryDate: Instant,
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,9 +1,3 @@
-
----
-
-### ✅ `ROADMAP.md`
-
-
 # 📍 Sandbrick Roadmap
 
 This document outlines the current and upcoming priorities for the Sandbrick backend.
@@ -13,19 +7,21 @@ This document outlines the current and upcoming priorities for the Sandbrick bac
 ## ✅ Recently Completed
 
 - ✅ Profile → Contact refactor (multi-channel contact support)
-- ✅ Swagger documentation added across DTOs and controllers
+- ✅ Swagger documentation added across all DTOs and controllers
+- ✅ Validation rules annotated and aligned across all entities
 - ✅ Flyway migration modularity with `.env`-based profiles
 - ✅ Token management: filtering, pagination, admin control
 - ✅ SecurityService abstraction per entity (Contact, Profile, etc.)
-- ✅ Full Makefile automation for dev/test/prod environments
+- ✅ Unit testing setup (JUnit 5) + first test for Xid generator
+- ✅ Full Makefile automation for dev/test/prod + test lifecycle
 
 ---
 
 ## 🧱 Core Development Milestones
 
-### 1. Swagger Documentation Cleanup
-- [ ] Complete consistent `@Schema` annotations
-- [ ] Validate all DTO examples and constraints
+### 1. Swagger Documentation Cleanup ✅ *(Completed)*
+- [x] Consistent `@Schema` annotations across all DTOs
+- [x] Example values and validation rules added
 
 ### 2. Backend Auth Enhancements
 - [ ] Password Reset Flow

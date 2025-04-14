@@ -2,17 +2,30 @@ package com.sandbrick.sbp.api.v1.currency.dto
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-@Schema(description = "Currency response model")
+@Schema(description = "Response object representing a currency")
 data class CurrencyResponse(
-    @Schema(description = "Unique identifier of the currency", example = "cfa3e3ab-37b7-413e-93f2-50a2c76597a9")
+
+    @Schema(
+        description = "Unique identifier of the currency",
+        example = "c7f0e0a1e9r0c030"
+    )
     val id: String,
 
-    @Schema(description = "Currency code", example = "EUR")
+    @Schema(
+        description = "Currency ISO code (3-letter uppercase)",
+        example = "EUR"
+    )
     val code: String,
 
-    @Schema(description = "Currency name", example = "Euro")
+    @Schema(
+        description = "Full name of the currency",
+        example = "Euro"
+    )
     val name: String,
 
-    @Schema(description = "Currency symbol", example = "€")
+    @Schema(
+        description = "Symbol used for currency display",
+        example = "€"
+    )
     val symbol: String
 )

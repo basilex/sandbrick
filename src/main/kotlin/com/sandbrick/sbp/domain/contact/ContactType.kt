@@ -2,7 +2,9 @@ package com.sandbrick.sbp.domain.contact
 
 import io.swagger.v3.oas.annotations.media.Schema
 
+@Schema(description = "Type of contact method")
 enum class ContactType {
+
     @Schema(description = "Email address")
     EMAIL,
 
@@ -21,6 +23,6 @@ enum class ContactType {
     @Schema(description = "Signal contact")
     SIGNAL,
 
-    @Schema(description = "Other contact type")
+    @Schema(description = "Other contact type (unspecified or custom)")
     OTHER
 }

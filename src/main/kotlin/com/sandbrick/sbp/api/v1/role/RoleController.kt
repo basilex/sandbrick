@@ -5,6 +5,8 @@ import com.sandbrick.sbp.api.v1.role.dto.response.RoleResponse
 import com.sandbrick.sbp.mapper.RoleMapper
 import com.sandbrick.sbp.service.role.RoleService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
@@ -21,37 +23,71 @@ class RoleController(
     private val roleService: RoleService,
     private val roleMapper: RoleMapper
 ) {
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Get a role by ID")
-    fun getById(@PathVariable id: String): RoleResponse =
-        roleMapper.toResponse(roleService.getById(id))
+    @Operation(
+        summary = "Get a role by ID",
+        responses = [
+            ApiResponse(responseCode = "200", description = "Role retrieved successfully"),
+            ApiResponse(responseCode = "404", description = "Role not found")
+        ]
+    )
+    fun getById(
+        @Parameter(description = "ID of the role", example = "d1f5a7d2-8b39-47b9-bf1e-2f0d5f1c3d1c")
+        @PathVariable id: String
+    ): RoleResponse = roleMapper.toResponse(roleService.getById(id))
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Create a new role")
+    @Operation(
+        summary = "Create a new role",
+        responses = [
+            ApiResponse(responseCode = "201", description = "Role created successfully"),
+            ApiResponse(responseCode = "400", description = "Invalid input")
+        ]
+    )
     fun create(@Valid @RequestBody request: RoleRequest): RoleResponse =
         roleMapper.toResponse(roleService.create(request))
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Update an existing role")
-    fun update(@PathVariable id: String, @Valid @RequestBody request: RoleRequest): RoleResponse =
-        roleMapper.toResponse(roleService.update(id, request))
+    @Operation(
+        summary = "Update an existing role",
+        responses = [
+            ApiResponse(responseCode = "200", description = "Role updated successfully"),
+            ApiResponse(responseCode = "404", description = "Role not found")
+        ]
+    )
+    fun update(
+        @Parameter(description = "ID of the role to update", example = "c7f0e0a1e9r0c030")
+        @PathVariable id: String,
+        @Valid @RequestBody request: RoleRequest
+    ): RoleResponse = roleMapper.toResponse(roleService.update(id, request))
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "Delete a role by ID")
-    fun delete(@PathVariable id: String) =
-        roleService.delete(id)
+    @Operation(
+        summary = "Delete a role by ID",
+        responses = [
+            ApiResponse(responseCode = "204", description = "Role deleted successfully"),
+            ApiResponse(responseCode = "404", description = "Role not found")
+        ]
+    )
+    fun delete(
+        @Parameter(description = "ID of the role to delete", example = "c7f0e0a1e9r0c030")
+        @PathVariable id: String
+    ) = roleService.delete(id)
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     @Operation(summary = "Get all roles with pagination")
     fun getAllPaged(
+        @Parameter(description = "Page number", example = "0")
         @RequestParam(defaultValue = "0") page: Int,
+        @Parameter(description = "Page size", example = "10")
         @RequestParam(defaultValue = "10") size: Int
     ): Page<RoleResponse> =
         roleService.getAllPaged(page, size).map(roleMapper::toResponse)

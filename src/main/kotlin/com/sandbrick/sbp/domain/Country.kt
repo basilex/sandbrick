@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size
 @Entity
 @Table(name = "country")
 class Country(
+
     @field:NotBlank(message = "Name must not be empty")
     @field:Size(min = 2, max = 255, message = "Name must be between 2 and 255 characters")
     @Column(nullable = false, unique = true)
@@ -15,17 +16,17 @@ class Country(
 
     @field:NotBlank(message = "ISO2 must not be empty")
     @field:Size(min = 2, max = 2, message = "ISO2 must be exactly 2 characters")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 2)
     var iso2: String,
 
     @field:NotBlank(message = "ISO3 must not be empty")
     @field:Size(min = 3, max = 3, message = "ISO3 must be exactly 3 characters")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 3)
     var iso3: String,
 
     @field:NotBlank(message = "Code must not be empty")
     @field:Size(min = 1, max = 10, message = "Code must be between 1 and 10 characters")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 10)
     var code: String,
 
     @ManyToMany
@@ -34,5 +35,5 @@ class Country(
         joinColumns = [JoinColumn(name = "country_id")],
         inverseJoinColumns = [JoinColumn(name = "currency_id")]
     )
-    val currencies: MutableSet<Currency> = mutableSetOf()
+    var currencies: MutableSet<Currency> = mutableSetOf()
 ) : BaseAuditEntity()

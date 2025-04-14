@@ -7,14 +7,17 @@ import com.sandbrick.sbp.mapper.ContactMapper
 import com.sandbrick.sbp.service.ContactService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.parameters.RequestBody
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
-import org.springframework.web.bind.annotation.*
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/contacts")
@@ -27,13 +30,19 @@ class ContactController(
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Get all contacts (no pagination)")
+    @Operation(
+        summary = "Get all contacts (no pagination)",
+        responses = [ApiResponse(responseCode = "200", description = "List of all contacts")]
+    )
     fun getAll(): List<ContactResponse> =
         contactService.getAll().map(contactMapper::toResponse)
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Get paginated contacts with optional filters")
+    @Operation(
+        summary = "Get paginated contacts with optional filters",
+        responses = [ApiResponse(responseCode = "200", description = "Paginated list of contacts")]
+    )
     fun getFiltered(
         @Parameter(description = "Page number", example = "0")
         @RequestParam(defaultValue = "0") page: Int,
@@ -50,17 +59,32 @@ class ContactController(
 
     @GetMapping("/user/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Get all contacts for specific user")
-    fun getByUserId(@PathVariable userId: String): List<ContactResponse> =
+    @Operation(
+        summary = "Get all contacts for specific user",
+        responses = [ApiResponse(responseCode = "200", description = "List of user's contacts")]
+    )
+    fun getByUserId(
+        @Parameter(description = "User ID", example = "c7f0e0a1e9r0vlu2")
+        @PathVariable userId: String
+    ): List<ContactResponse> =
         contactService.getByUserId(userId).map(contactMapper::toResponse)
 
     @PostMapping("/user/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Create a new contact for user")
+    @Operation(
+        summary = "Create a new contact for user",
+        requestBody = RequestBody(
+            description = "New contact details",
+            required = true,
+            content = [Content(schema = Schema(implementation = ContactRequest::class))]
+        ),
+        responses = [ApiResponse(responseCode = "201", description = "Contact created successfully")]
+    )
     fun create(
+        @Parameter(description = "User ID", example = "c7f0e0a1e9r0vlu2")
         @PathVariable userId: String,
-        @RequestBody @Valid request: ContactRequest
+        @Valid @RequestBody request: ContactRequest
     ): ContactResponse =
         contactMapper.toResponse(contactService.create(userId, request))
 
@@ -69,6 +93,11 @@ class ContactController(
     @Operation(
         summary = "Update contact by ID",
         description = "Allows an admin or the contact's owner to update contact information",
+        requestBody = RequestBody(
+            description = "Updated contact details",
+            required = true,
+            content = [Content(schema = Schema(implementation = ContactRequest::class))]
+        ),
         responses = [
             ApiResponse(responseCode = "200", description = "Contact updated successfully"),
             ApiResponse(responseCode = "403", description = "Forbidden"),
@@ -76,8 +105,9 @@ class ContactController(
         ]
     )
     fun update(
+        @Parameter(description = "Contact ID", example = "c7f0e0a1e9r0abc1")
         @PathVariable id: String,
-        @RequestBody @Valid request: ContactRequest
+        @Valid @RequestBody request: ContactRequest
     ): ContactResponse =
         contactService.update(id, request).let(contactMapper::toResponse)
 
@@ -93,6 +123,8 @@ class ContactController(
             ApiResponse(responseCode = "404", description = "Contact not found")
         ]
     )
-    fun delete(@PathVariable contactId: String) =
-        contactService.delete(contactId)
+    fun delete(
+        @Parameter(description = "Contact ID", example = "c7f0e0a1e9r0abc1")
+        @PathVariable contactId: String
+    ) = contactService.delete(contactId)
 }

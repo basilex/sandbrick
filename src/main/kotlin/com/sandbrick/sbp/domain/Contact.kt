@@ -3,18 +3,20 @@ package com.sandbrick.sbp.domain
 import com.sandbrick.sbp.domain.base.BaseAuditEntity
 import com.sandbrick.sbp.domain.contact.ContactType
 import jakarta.persistence.*
+import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 
 @Entity
 @Table(name = "contact")
 data class Contact(
-    @field:Size(max = 32, message = "Contact type must be max = 32 characters")
+
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     var type: ContactType,
 
-    @field:Size(max = 255, message = "Contact content must be max = 255 characters")
-    @Column(columnDefinition = "text", nullable = false)
+    @field:NotBlank(message = "Contact content must not be blank")
+    @field:Size(max = 255, message = "Contact content must not exceed 255 characters")
+    @Column(nullable = false, columnDefinition = "text")
     var content: String,
 
     @Column(nullable = false)
@@ -24,5 +26,10 @@ data class Contact(
     @JoinColumn(name = "user_id", nullable = false)
     var user: User
 ) : BaseAuditEntity() {
-    val userId: String get() = user.id
+
+    /**
+     * Exposes user ID without forcing full user load.
+     */
+    val userId: String
+        get() = user.id
 }

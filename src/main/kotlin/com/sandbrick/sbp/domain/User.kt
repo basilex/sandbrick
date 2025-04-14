@@ -2,21 +2,21 @@ package com.sandbrick.sbp.domain
 
 import com.sandbrick.sbp.domain.base.BaseAuditEntity
 import jakarta.persistence.*
-import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 
 @Entity
 @Table(name = "users")
 class User(
+
     @field:NotBlank(message = "Username is required")
-    @field:Size(min = 3, max = 64, message = "Ussername must be from 3 to 64 characters")
-    @Column(nullable = false, unique = true)
+    @field:Size(min = 3, max = 64, message = "Username must be between 3 and 64 characters")
+    @Column(nullable = false, unique = true, length = 64)
     var username: String,
 
     @field:NotBlank(message = "Password is required")
-    @field:Size(min = 6, max = 255, message = "Paassword must be from 6 to 255 characters")
-    @Column(nullable = false)
+    @field:Size(min = 6, max = 255, message = "Password must be between 6 and 255 characters")
+    @Column(nullable = false, length = 255)
     var password: String,
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -27,9 +27,19 @@ class User(
     )
     var roles: MutableSet<Role> = mutableSetOf(),
 
-    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToOne(
+        mappedBy = "user",
+        cascade = [CascadeType.ALL],
+        fetch = FetchType.LAZY,
+        orphanRemoval = true
+    )
     var profile: Profile? = null,
 
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(
+        mappedBy = "user",
+        cascade = [CascadeType.ALL],
+        fetch = FetchType.LAZY,
+        orphanRemoval = true
+    )
     var contacts: MutableSet<Contact> = mutableSetOf()
 ) : BaseAuditEntity()

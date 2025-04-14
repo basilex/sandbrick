@@ -2,11 +2,20 @@ package com.sandbrick.sbp.api.v1.role.dto.response
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-@Schema(description = "Role response model")
+@Schema(description = "Response containing role information")
 data class RoleResponse(
-    @Schema(description = "Unique identifier of the role", example = "d1f5a7d2-8b39-47b9-bf1e-2f0d5f1c3d1c")
+
+    @Schema(
+        description = "Unique identifier of the role",
+        example = "c7f0e0a1e9r0c030",
+        required = true
+    )
     val id: String,
 
-    @Schema(description = "Name of the role", example = "ADMIN")
+    @Schema(
+        description = "Name of the role",
+        example = "ADMIN",
+        required = true
+    )
     val name: String
 )

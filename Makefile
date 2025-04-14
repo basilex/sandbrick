@@ -4,9 +4,11 @@ APP_NAME = sandbrick
 # === Build the project ===
 clean:
 	./gradlew clean
-build: clean
+test:
+	./gradlew test
+build: clean test
 	./gradlew build
-.PHONY: build clean
+.PHONY: build clean test
 
 # === Run Spring Boot in different profiles ===
 run-dev:

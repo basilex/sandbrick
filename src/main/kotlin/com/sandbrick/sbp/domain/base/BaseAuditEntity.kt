@@ -1,12 +1,16 @@
-
 package com.sandbrick.sbp.domain.base
 
 import com.sandbrick.sbp.util.Xid
 import jakarta.persistence.*
 import java.time.Instant
 
+/**
+ * Base class for auditable entities.
+ * Provides a generated ID and automatic timestamps for creation and last update.
+ */
 @MappedSuperclass
 abstract class BaseAuditEntity {
+
     @Id
     val id: String = Xid.generate()
 
