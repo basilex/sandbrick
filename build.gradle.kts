@@ -57,7 +57,7 @@ dependencies {
 
 	// TESTING
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
-		exclude(group = "org.junit.vintage", module = "junit-vintage-engine") // отключаем JUnit 4
+		exclude(group = "org.junit.vintage", module = "junit-vintage-engine") // JUnit 4 off
 	}
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
 	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
