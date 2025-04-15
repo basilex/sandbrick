@@ -1,7 +1,9 @@
 package com.sandbrick.sbp.domain
 
+import com.sandbrick.sbp.domain.auth.EmailVerificationToken
 import com.sandbrick.sbp.domain.auth.ResetToken
 import com.sandbrick.sbp.domain.base.BaseAuditEntity
+import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
@@ -19,6 +21,10 @@ class User(
     @field:Size(min = 6, max = 255, message = "Password must be between 6 and 255 characters")
     @Column(nullable = false, length = 255)
     var password: String,
+
+    @Schema(description = "Whether the user's email has been verified", example = "true")
+    @Column(name = "email_verified", nullable = false)
+    var emailVerified: Boolean = false,
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -50,5 +56,14 @@ class User(
         fetch = FetchType.LAZY,
         orphanRemoval = true
     )
-    val resetTokens: MutableSet<ResetToken> = mutableSetOf()
+    val resetTokens: MutableSet<ResetToken> = mutableSetOf(),
+
+    @OneToMany(
+        mappedBy = "user",
+        cascade = [CascadeType.ALL],
+        fetch = FetchType.LAZY,
+        orphanRemoval = true
+    )
+    var emailVerificationTokens: MutableSet<EmailVerificationToken> = mutableSetOf()
+
 ) : BaseAuditEntity()

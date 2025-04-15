@@ -28,6 +28,7 @@ class SecurityConfig(
                     .requestMatchers(
                         // api
                         "/api/v1/auth/**",
+                        "/api/v1/auth/verify-email/confirm",
                         // swagger
                         "/v3/api-docs/**",
                         "/swagger-ui/**",

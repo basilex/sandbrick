@@ -20,7 +20,7 @@
 
 ## 📁 Project Structure
 
-```plaintext
+```
 .
 ├── build.gradle.kts           # Gradle build configuration
 ├── Dockerfile                 # Docker image definition
@@ -41,55 +41,95 @@
 │   ├── resources/
 │   │   ├── application-*.yaml    # Per-profile configs
 │   │   └── db/migration/         # Flyway SQL migrations
+│   │   └── templates/            # Thymeleaf templates (emails + views)
 └── README.md
 ```
 
-### 📚 API Docs
+---
 
-API is documented with OpenAPI 3 / Swagger UI.
+## 📚 API Docs
 
-🔐 All endpoints require authentication via Bearer tokens (Authorization: Bearer <token>)
+- Swagger UI: `http://localhost:8081/swagger-ui.html`
+- OpenAPI JSON: `http://localhost:8081/v3/api-docs`
+- All endpoints use Bearer token auth:  
+  `Authorization: Bearer <access_token>`
 
-### 🧪 Running Locally
+---
 
-### Run development server with dev profile
+## 🧪 Running Locally
+
+### Development server
 
 ```bash
-make run-dev
+make run-clean-dev
 ```
 
-### Run PostgreSQL + app in Docker
+This will clean, migrate, build, and start your local dev environment.
+
+### PostgreSQL + App in Docker
 
 ```bash
 make docker-up
 ```
 
-See .env.dev, .env.prod, .env.test for configuration.
-
-### 🔧 Migration & Database
+Stop with:
 
 ```bash
-# Run migrations (Flyway) for dev profile
+make docker-down
+```
+
+> See `.env.dev`, `.env.prod`, `.env.test` for database and app configuration.
+
+---
+
+## 🔧 Migrations (Flyway)
+
+```bash
+# Run migrations for dev profile
 make migrate-up
 
 # Clean dev DB (⚠ dangerous!)
 make migrate-down
+
+# Run/reset test DB
+make run-clean-test
 ```
 
-### 🌍 Live Preview
+---
 
-🧱 Hosted with HubSpot Landing Pages
+## 📬 Email Verification Flow
 
-### 📌 Roadmap
-See ROADMAP.md for detailed feature planning, tech debt, and goals.
+- Verification tokens sent via SMTP (Mailtrap or other)
+- HTML templates using Thymeleaf (`templates/email/verification.html`)
+- Friendly confirmation page (also using Thymeleaf)
+- Secure, token-based endpoint:  
+  `GET /api/v1/auth/verify-email/confirm?token=...`
 
-### 📄 Legal & Guidelines
+---
 
-- License (MIT)
-- Contribution Guidelines
-- Code of Conduct
-- Security Policy
+## 🌍 Live Preview
 
-### 🤝 Maintainers
-Built by @basilex with ❤️
+🧱 Hosted with HubSpot Landing Pages  
+👉 *Coming soon*
 
+---
+
+## 📌 Roadmap
+
+See [`ROADMAP.md`](./ROADMAP.md) for upcoming milestones and goals.
+
+---
+
+## 📄 Legal & Guidelines
+
+- [MIT License](./LICENSE)
+- [Contribution Guidelines](./CONTRIBUTING.md)
+- [Code of Conduct](./CODE_OF_CONDUCT.md)
+- [Security Policy](./SECURITY.md)
+
+---
+
+## 🙌 Maintainers
+
+Built by [@basilex](https://github.com/basilex) with ❤️  
+Contributions welcome!

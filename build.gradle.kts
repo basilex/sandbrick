@@ -55,6 +55,12 @@ dependencies {
 	// PostgreSQL driver
 	runtimeOnly("org.postgresql:postgresql:42.7.2")
 
+	// Mail
+	implementation("com.sun.mail:jakarta.mail:2.0.1")
+
+	// Templater
+	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+
 	// TESTING
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine") // JUnit 4 off
@@ -90,4 +96,5 @@ tasks.withType<JavaExec> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	systemProperty("spring.profiles.active", "test")
 }

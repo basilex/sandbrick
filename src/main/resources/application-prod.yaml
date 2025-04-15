@@ -32,6 +32,14 @@ spring:
     init:
       mode: never
 
+mail:
+  enabled: true
+  from: ${MAIL_FROM}
+  host: ${MAIL_HOST}
+  port: ${MAIL_PORT}
+  username: ${MAIL_USERNAME}
+  password: ${MAIL_PASSWORD}
+
 springdoc:
   packages-to-scan: com.sandbrick.sbp
 

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Verification Failed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --error-color: #dc3545;
+      --background-color: #f9f9f9;
+      --text-color: #333;
+      --border-radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--background-color);
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: #fff;
+      padding: 40px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .card h1 {
+      color: var(--error-color);
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .card p {
+      color: var(--text-color);
+      font-size: 1rem;
+      margin-bottom: 0;
+    }
+
+    .icon {
+      font-size: 48px;
+      color: var(--error-color);
+      margin-bottom: 16px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">❌</div>
+  <h1>Verification Failed</h1>
+  <p>The verification link is invalid or has expired.<br>Please request a new one.</p>
+</div>
+</body>
+</html>

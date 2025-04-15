@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Size
 data class Contact(
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 32)
+    @Column(nullable = false, length = 32, columnDefinition = "contact_type")
     var type: ContactType,
 
     @field:NotBlank(message = "Contact content must not be blank")

@@ -25,6 +25,15 @@ logging:
   level:
     org.springframework.jdbc.datasource.init: DEBUG
 
+mail:
+  smtp:
+    enabled: true
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    from: ${MAIL_FROM}
+
 app:
   validation:
     first-name-min-length: 3

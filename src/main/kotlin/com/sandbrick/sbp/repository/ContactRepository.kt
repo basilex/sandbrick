@@ -9,8 +9,22 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 interface ContactRepository : JpaRepository<Contact, String> {
-//    alternative
-//    fun findAllByUser_Id(userId: String): List<Contact>
+    @Query(
+        value = """
+        SELECT * FROM contact 
+         WHERE content = :content 
+           AND type = CAST(:type AS contact_type)
+    """,
+        nativeQuery = true
+    )
+    fun findByContentAndType(
+        @Param("content") content: String,
+        @Param("type") type: String
+    ): Contact?
+
+
+    // alternative (but I don't like underscores in names)
+    // fun findAllByUser_Id(userId: String): List<Contact>
 
     @Query("SELECT c FROM Contact c WHERE c.user.id = :userId")
     fun findAllByUserId(@Param("userId") userId: String): List<Contact>
@@ -27,5 +41,4 @@ interface ContactRepository : JpaRepository<Contact, String> {
         @Param("preferrable") preferrable: Boolean?,
         pageable: Pageable
     ): Page<Contact>
-
 }

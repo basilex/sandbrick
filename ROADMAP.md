@@ -12,29 +12,33 @@ This document outlines the current and upcoming priorities for the Sandbrick bac
 - ✅ Flyway migration modularity with `.env`-based profiles
 - ✅ Token management: filtering, pagination, admin control
 - ✅ SecurityService abstraction per entity (Contact, Profile, etc.)
-- ✅ Unit testing setup (JUnit 5) + first test for Xid generator
 - ✅ Full Makefile automation for dev/test/prod + test lifecycle
+- ✅ Unit testing setup (JUnit 5) + Xid generator covered
+- ✅ Email Verification Flow (HTML template, token via mail, confirmation handler)
+- ✅ Thymeleaf-based email templates
+- ✅ Email GET confirmation with styled HTML views
 
 ---
 
 ## 🧱 Core Development Milestones
 
-### 1. Swagger Documentation Cleanup ✅ *(Completed)*
-- [x] Consistent `@Schema` annotations across all DTOs
-- [x] Example values and validation rules added
-
-### 2. Backend Auth Enhancements
-- [ ] Password Reset Flow
-- [ ] Email Verification Flow
+### 1. Backend Auth Enhancements
+- [x] Password Reset Flow
+- [x] Email Verification Flow
 - [ ] 2FA via Authenticator App or SMS/Email
 
-### 3. Web Interface Strategy
+### 2. Web Interface Strategy
 - [x] Bootstrap theme evaluation (e.g. SB Admin Pro)
-- [ ] Decide on templating engine (e.g. Thymeleaf vs REST frontend)
+- [ ] Decide on templating engine (Thymeleaf confirmed for email views)
 - [ ] Define design guidelines (strict, minimal, consistent)
 - [ ] Build responsive authentication and dashboard UI
 
-### 4. Transition to Microservices (Future Phase)
+### 3. Test Strategy Upgrade
+- [x] Test lifecycle consistency across Makefile and Flyway
+- [ ] Add integration tests with Testcontainers
+- [ ] Increase test coverage for auth & user flows
+
+### 4. Microservice Preparation (Future Phase)
 - [ ] Define service boundaries:
   - API Gateway
   - Auth Service
@@ -64,6 +68,7 @@ This document outlines the current and upcoming priorities for the Sandbrick bac
 - Rate-limiting on login & token refresh
 - i18n/l10n support
 - Extended contact types: Slack, Discord, LinkedIn
+- Audit logs on key flows (login, verify, reset)
 
 ---
 
