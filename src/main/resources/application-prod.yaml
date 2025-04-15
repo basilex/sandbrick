@@ -32,6 +32,10 @@ spring:
     init:
       mode: never
 
+app:
+  url:
+    frontend-base: ${APP_FRONTEND_BASE:http://localhost:8080}
+
 mail:
   enabled: true
   from: ${MAIL_FROM}

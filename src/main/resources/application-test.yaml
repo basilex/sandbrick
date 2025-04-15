@@ -20,6 +20,10 @@ spring:
     validate-on-migrate: true
     clean-disabled: false
 
+app:
+  url:
+    frontend-base: ${APP_FRONTEND_BASE:http://localhost:8082}
+
 mail:
   smtp:
     enabled: false

@@ -44,15 +44,13 @@ class EmailVerificationService(
             subject = "Verify your Sandbrick account",
             body = html
         )
-
         return token
     }
 
     @Transactional
     fun confirmVerification(request: EmailVerificationConfirmRequest) {
         val token = emailVerificationTokenRepository.findByTokenAndConfirmedIsFalseAndExpiryDateAfter(
-            request.token,
-            Instant.now()
+            request.token, Instant.now()
         ) ?: throw ValidationException("Invalid or expired verification token")
 
         token.confirmed = true
