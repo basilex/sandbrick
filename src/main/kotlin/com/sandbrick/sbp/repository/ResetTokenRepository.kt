@@ -12,6 +12,7 @@ interface ResetTokenRepository : JpaRepository<ResetToken, String> {
     fun deleteAllByUserId(userId: String)
     fun existsByToken(token: String): Boolean
     fun deleteAllByExpiryDateBefore(before: Instant)
+    fun deleteExpiredTokens(before: Instant = Instant.now())
 
     fun findByTokenAndUsedIsFalseAndExpiryDateAfter(token: String, now: Instant): ResetToken?
 }
