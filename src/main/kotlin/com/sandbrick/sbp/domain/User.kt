@@ -1,6 +1,6 @@
 package com.sandbrick.sbp.domain
 
-import com.sandbrick.sbp.domain.auth.EmailVerificationToken
+import com.sandbrick.sbp.domain.auth.EVToken
 import com.sandbrick.sbp.domain.auth.ResetToken
 import com.sandbrick.sbp.domain.base.BaseAuditEntity
 import io.swagger.v3.oas.annotations.media.Schema
@@ -64,6 +64,6 @@ class User(
         fetch = FetchType.LAZY,
         orphanRemoval = true
     )
-    var emailVerificationTokens: MutableSet<EmailVerificationToken> = mutableSetOf()
+    var EVTokens: MutableSet<EVToken> = mutableSetOf()
 
 ) : BaseAuditEntity()

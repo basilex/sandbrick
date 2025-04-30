@@ -1,10 +1,10 @@
 package com.sandbrick.sbp.repository
 
-import com.sandbrick.sbp.domain.auth.EmailVerificationToken
+import com.sandbrick.sbp.domain.auth.EVToken
 import org.springframework.data.jpa.repository.JpaRepository
 import java.time.Instant
 
-interface EmailVerificationTokenRepository : JpaRepository<EmailVerificationToken, String> {
-    fun findByTokenAndConfirmedIsFalseAndExpiryDateAfter(token: String, now: Instant): EmailVerificationToken?
+interface EmailVerificationTokenRepository : JpaRepository<EVToken, String> {
+    fun findByTokenAndConfirmedIsFalseAndExpiryDateAfter(token: String, now: Instant): EVToken?
     fun deleteAllByExpiryDateBefore(before: Instant)
 }

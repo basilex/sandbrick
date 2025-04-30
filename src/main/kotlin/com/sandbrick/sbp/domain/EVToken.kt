@@ -10,7 +10,7 @@ import java.time.Instant
 @Schema(description = "Entity representing an email verification token associated with a user.")
 @Entity
 @Table(name = "email_verification_token")
-class EmailVerificationToken(
+class EVToken(
 
     @Schema(
         description = "Unique verification token string",

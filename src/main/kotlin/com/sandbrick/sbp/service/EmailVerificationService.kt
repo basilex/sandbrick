@@ -2,7 +2,7 @@ package com.sandbrick.sbp.service
 
 import com.sandbrick.sbp.api.v1.auth.dto.EmailVerificationConfirmRequest
 import com.sandbrick.sbp.api.v1.auth.dto.EmailVerificationRequest
-import com.sandbrick.sbp.domain.auth.EmailVerificationToken
+import com.sandbrick.sbp.domain.auth.EVToken
 import com.sandbrick.sbp.domain.contact.ContactType
 import com.sandbrick.sbp.exception.ResourceNotFoundException
 import com.sandbrick.sbp.exception.ValidationException
@@ -34,7 +34,7 @@ class EmailVerificationService(
         val expiry = Instant.now().plus(1, ChronoUnit.HOURS)
 
         emailVerificationTokenRepository.save(
-            EmailVerificationToken(token = token, expiryDate = expiry, user = user)
+            EVToken(token = token, expiryDate = expiry, user = user)
         )
 
         val html = emailTemplateService.renderVerificationEmail(user.username, token)
